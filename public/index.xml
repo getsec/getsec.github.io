@@ -31,5 +31,14 @@ python -m venv venv source venv/bin/activate pip install bandit Lets use the fol
 from os import system system(&amp;#39;sudo su&amp;#39;) Obviously using sudo su in a shell process isn&amp;rsquo;t good practice, but we&amp;rsquo;re just showing off the capabilities of bandit.</description>
     </item>
     
+    <item>
+      <title>this is a test page</title>
+      <link>/posts/test/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/test/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

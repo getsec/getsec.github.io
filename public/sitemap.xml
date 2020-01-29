@@ -51,4 +51,8 @@
     <loc>/categories/</loc>
   </url>
   
+  <url>
+    <loc>/posts/test/</loc>
+  </url>
+  
 </urlset>
