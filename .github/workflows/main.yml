@@ -26,5 +26,5 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: $HOME/hugo -v deploy --maxDeletes -1
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.HUGO_S3_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.HUGO_S3_SECRET }}
