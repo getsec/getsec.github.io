@@ -1,24 +1,26 @@
 +++
-title = "Security checking for python"
+title = "Call the police - we got a bandit."
 date = "2020-01-29 10:04:03.128"
 author = "Nathan Getty"
-tags = ["AWS", "Amazon", "info", "enumeration"]
-keywords = ["AWS", "Amazon", "info", "enumeration"]
-description = "running security checks on your python code!"
+tags = ["python", "security", "lint"]
+tags = ["python", "security", "lint"]
+description = "Using linters to check code for security flaws"
 showFullContent = false
 +++
 
 
 # The basics
-Today we will be talking about bandit, a python static analysis tool that reviews your code for possible security flaws. We will be using bandit, lets create a virtual environment and use pip to install bandit.
 
+Today I would like to share with you some security lessons when using python. How we can use static linting to check our code for possible security flaws leveraging *bandit*. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the power of the *bandit*. Not to highlight my inability to program. ☕️
+
+First as always, we will create a virtual environment. We dont want to muck around with any of our old dependencies. [I love environments](https://xkcd.com/1987/)
 ```sh
 python -m venv venv
 source venv/bin/activate
 pip install bandit
 ```
 
-Lets use the following application below as an example.
+We can leverage the system function from the os library and pass in some pretty naughty input. No reason for that to be there.
 
 ```py
 from os import system
@@ -26,13 +28,13 @@ from os import system
 system('sudo su')
 ```
 
-Obviously using sudo su in a shell process isn't good practice, but we're just showing off the capabilities of bandit. So, lets run bandit against our file.
+Lets run bandit against our app to see if there are any issues it finds with aforementioned code snippet.
 
 ```sh
 bandit app_name.py
 ```
 
-> Below is an example of the response
+> Lets take a look at that juicy output
 
 ```
 Test results:
@@ -76,3 +78,35 @@ This is pretty nice it gives us all the results we need. We can use these result
 ## VSCode Implementation
 
 In VSCode, what you can do is use CMD+Shift+P while in your python application and select linter, and choose bandit, you may be asked to install it, choose yes, ensure you tell VSCode to use bandit once more, and now, if you hover over the marked text, you will see the error/warnings.
+
+
+## Hey Nathan! What if I want to do this in a CI/CD thing?
+
+Oh damn jimmy, thats a pretty good idea. Now, I dont have an exact example but I this is how I would implement such a plan.
+
+1. With your CI/CD tool install the bandit library during your pre-build phase
+2. Create a shell script to run bandit and parse the output for something you'd want. this is only *psuedo code*
+``` bash
+function run_bandit(){
+        SEARCH_STR="Severity: HIGH "
+        # Run bandit first of all, which is good
+        bandit $MY_FILE 
+        bandit $MY_FILE | grep $SEARCH_STR
+}
+
+# Run the bandit function and check to see if it passed
+# in the if statement, if the grep fails, that means we should get an exit code non-zero. Which means nothing was found
+# if we get a 0, that means the search string matched, which means we found something bad
+run_bandit
+
+if [ $? -ne 0 ]
+then
+        echo "We're good"
+        exit 0
+else
+        echo "Uh oh, looks like we found some errors!"
+        echo "STOPPING BUILD"
+        exit 1
+fi
+
+111
