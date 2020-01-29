@@ -55,7 +55,7 @@ URL = "s3://nathan-getty-hugo-blog?region=ca-central-1"
 # If you are using a CloudFront CDN, deploy will invalidate the cache as needed.
 cloudFrontDistributionID = 'E1GG62YQ9Q8RI9'
 
-
+#
 # ... add more [[deployment.targets]] sections ...
 
 
