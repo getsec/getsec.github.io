@@ -16,7 +16,6 @@ The main reason I wanted this blog is that running a normal website requires hos
 2. The source code is stored on github, and we leverage github actions to automatically post new changes to AWS
 3. We leverage AWS S3 and a CloudFront Distribution to handle the CDN and certificates
 
-
 # How do you get the automatic deployment working
 
 Well github actions are pretty sweet and it allows us to run builds directly from github, which is a great feature. Heres the example of our yml file
@@ -50,3 +49,9 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.HUGO_S3_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.HUGO_S3_SECRET }}
 ```
+
+# Resources
+
+1. [GitHub Actions](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/about-github-actions)
+2. [Hugo Getting Started](https://gohugo.io/getting-started/quick-start/)
+3. [Hugo + Github Actions + AWS S3 Deployment](https://github.com/nathany/hugo-deploy)
