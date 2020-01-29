@@ -50,6 +50,35 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.HUGO_S3_SECRET }}
 ```
 
+# Wait, how do I pass in the credentials securely
+Well before we pass in any credentials, lets make sure we create an IAM user on your account that is only locked down to that bucket. This way, if these credentials get compromised, the scope will only be to that bucket and not your AWS account.
+
+1. Create an IAM User
+2. Create a IAM Policy that only allows access to that bucket
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "s3:List*",
+                "s3:Put*",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::nathan-getty-hugo-blog",
+                "arn:aws:s3:::nathan-getty-hugo-blog/*"
+            ],
+            "Effect": "Allow"
+        }
+    ]
+}
+```
+3. Apply that policy to the user.
+4. Save the Access Key and Secret Key and copy them to your git settings https://github.com/getsec/YOURREPO/settings/secrets
+5. Add the keys and then reference them in your main.yml config file.
+6. Thats it
+
 # Resources
 
 1. [GitHub Actions](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/about-github-actions)

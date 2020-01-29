@@ -153,7 +153,42 @@ So how is this blog made?  We use hugo to build the source and write all the art
         <span style="color:#66d9ef">env</span>:
           <span style="color:#66d9ef">AWS_ACCESS_KEY_ID</span>: ${{ secrets.HUGO_S3_KEY }}
           <span style="color:#66d9ef">AWS_SECRET_ACCESS_KEY</span>: ${{ secrets.HUGO_S3_SECRET }}
-</code></pre></div>
+</code></pre></div><h1 id="wait-how-do-i-pass-in-the-credentials-securely">Wait, how do I pass in the credentials securely<a href="#wait-how-do-i-pass-in-the-credentials-securely" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>Well before we pass in any credentials, lets make sure we create an IAM user on your account that is only locked down to that bucket. This way, if these credentials get compromised, the scope will only be to that bucket and not your AWS account.</p>
+<ol>
+<li>Create an IAM User</li>
+<li>Create a IAM Policy that only allows access to that bucket</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+    <span style="color:#f92672">&#34;Statement&#34;</span>: [
+        {
+            <span style="color:#f92672">&#34;Action&#34;</span>: [
+                <span style="color:#e6db74">&#34;s3:List*&#34;</span>,
+                <span style="color:#e6db74">&#34;s3:Put*&#34;</span>,
+                <span style="color:#e6db74">&#34;s3:DeleteObject&#34;</span>
+            ],
+            <span style="color:#f92672">&#34;Resource&#34;</span>: [
+                <span style="color:#e6db74">&#34;arn:aws:s3:::nathan-getty-hugo-blog&#34;</span>,
+                <span style="color:#e6db74">&#34;arn:aws:s3:::nathan-getty-hugo-blog/*&#34;</span>
+            ],
+            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>
+        }
+    ]
+}
+</code></pre></div><ol start="3">
+<li>Apply that policy to the user.</li>
+<li>Save the Access Key and Secret Key and copy them to your git settings <a href="https://github.com/getsec/YOURREPO/settings/secrets">https://github.com/getsec/YOURREPO/settings/secrets</a></li>
+<li>Add the keys and then reference them in your main.yml config file.</li>
+<li>Thats it</li>
+</ol>
+<h1 id="resources">Resources<a href="#resources" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<ol>
+<li><a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/about-github-actions">GitHub Actions</a></li>
+<li><a href="https://gohugo.io/getting-started/quick-start/">Hugo Getting Started</a></li>
+<li><a href="https://github.com/nathany/hugo-deploy">Hugo + Github Actions + AWS S3 Deployment</a></li>
+</ol>
+
       </div></div>
   
   <div class="pagination">
