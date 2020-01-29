@@ -3,7 +3,9 @@ title: "How I Made This Blog"
 date: 2020-01-29T11:05:56-06:00
 author: Nathan Getty
 tags: ["blog", "meta"]
-draft: true
+draft: False
+description: "Come on in, let me show you my ways."
+showFullContent: false
 ---
 
 # Whats the deal with blogs and shit?
