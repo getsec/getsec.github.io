@@ -3,8 +3,8 @@ title = "Call the police - we got a bandit."
 date = "2020-01-29 10:04:03.128"
 author = "Nathan Getty"
 tags = ["python", "security", "lint"]
-tags = ["python", "security", "lint"]
-description = "Using linters to check code for security flaws"
+keywords =  ["python", "security", "lint"]
+description = "using static analysis to check for security issues."
 showFullContent = false
 +++
 
