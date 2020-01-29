@@ -18,11 +18,11 @@ jobs:
         env:
           HUGO_VERSION: 0.59.1
       - name: Hugo Build
-        run: $HOME/hugo -v
+        run: $HOME/hugo -D -v
 
       - name: Deploy to S3
         if: github.ref == 'refs/heads/master'
-        run: $HOME/hugo -v deploy --invalidateCDN --maxDeletes -1
+        run: $HOME/hugo -v deploy --invalidateCDN
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.HUGO_S3_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.HUGO_S3_SECRET }}
