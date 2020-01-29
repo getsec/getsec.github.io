@@ -6,10 +6,20 @@
     <description>Recent content on Getty Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 29 Jan 2020 10:04:03 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 29 Jan 2020 11:05:56 -0600</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How I Made This Blog</title>
+      <link>/posts/how-i-made-this-blog/</link>
+      <pubDate>Wed, 29 Jan 2020 11:05:56 -0600</pubDate>
+      
+      <guid>/posts/how-i-made-this-blog/</guid>
+      <description>Whats the deal with blogs and shit? The main reason I wanted this blog is that running a normal website requires hosting a server, keeping it online, updating it and all the other jazz that I dont really care to manage
+So how is this blog made?  We use hugo to build the source and write all the articles in markdown format, which makes things so damn easy The source code is stored on github, and we leverage github actions to automatically post new changes to AWS We leverage AWS S3 and a CloudFront Distribution to handle the CDN and certificates  How do you get the automatic deployment working Well github actions are pretty sweet and it allows us to run builds directly from github, which is a great feature.</description>
+    </item>
     
     <item>
       <title>Describe all the things in AWS</title>
@@ -17,7 +27,7 @@
       <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
       
       <guid>/posts/cross-account-information-gathering/</guid>
-      <description></description>
+      <description>How can query multiple accounts for a lot of informaiton. Well theres a few ways we can do this. Honestly what I beleive is that leveraging a cross account role in each account is one the best ways to hadle this. This allows for us to have the one spot for control and access. If you have a way to deploy this role in an automated way, that would be best.</description>
     </item>
     
     <item>
@@ -29,15 +39,6 @@
       <description>The basics Today we will be talking about bandit, a python static analysis tool that reviews your code for possible security flaws. We will be using bandit, lets create a virtual environment and use pip to install bandit.
 python -m venv venv source venv/bin/activate pip install bandit Lets use the following application below as an example.
 from os import system system(&amp;#39;sudo su&amp;#39;) Obviously using sudo su in a shell process isn&amp;rsquo;t good practice, but we&amp;rsquo;re just showing off the capabilities of bandit.</description>
-    </item>
-    
-    <item>
-      <title>this is a test page</title>
-      <link>/posts/test/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/posts/test/</guid>
-      <description></description>
     </item>
     
   </channel>

@@ -3,6 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/tags/blog/</loc>
+    <lastmod>2020-01-29T11:05:56-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-01-29T11:05:56-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/how-i-made-this-blog/</loc>
+    <lastmod>2020-01-29T11:05:56-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/meta/</loc>
+    <lastmod>2020-01-29T11:05:56-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/</loc>
+    <lastmod>2020-01-29T11:05:56-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-01-29T11:05:56-06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/amazon/</loc>
     <lastmod>2020-01-29T10:04:03+00:00</lastmod>
   </url>
@@ -23,17 +53,7 @@
   </url>
   
   <url>
-    <loc>/</loc>
-    <lastmod>2020-01-29T10:04:03+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/tags/info/</loc>
-    <lastmod>2020-01-29T10:04:03+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/posts/</loc>
     <lastmod>2020-01-29T10:04:03+00:00</lastmod>
   </url>
   
@@ -43,16 +63,7 @@
   </url>
   
   <url>
-    <loc>/tags/</loc>
-    <lastmod>2020-01-29T10:04:03+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/categories/</loc>
-  </url>
-  
-  <url>
-    <loc>/posts/test/</loc>
   </url>
   
 </urlset>

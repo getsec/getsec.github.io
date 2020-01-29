@@ -8,3 +8,8 @@ keywords = ["AWS", "Amazon", "info", "enumeration"]
 description = "How can we get a load of information fast..."
 showFullContent = true
 +++
+
+## How can query multiple accounts for a lot of informaiton.
+
+Well theres a few ways we can do this. Honestly what I beleive is that leveraging a cross account role in each account is one the best ways to hadle this. This allows for us to have the one spot for control and access. If you have a way to deploy this role in an automated way, that would be best.
+

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>meta on Getty Blog</title>
+    <link>/tags/meta/</link>
+    <description>Recent content in meta on Getty Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 29 Jan 2020 11:05:56 -0600</lastBuildDate>
+    
+	<atom:link href="/tags/meta/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How I Made This Blog</title>
+      <link>/posts/how-i-made-this-blog/</link>
+      <pubDate>Wed, 29 Jan 2020 11:05:56 -0600</pubDate>
+      
+      <guid>/posts/how-i-made-this-blog/</guid>
+      <description>Whats the deal with blogs and shit? The main reason I wanted this blog is that running a normal website requires hosting a server, keeping it online, updating it and all the other jazz that I dont really care to manage
+So how is this blog made?  We use hugo to build the source and write all the articles in markdown format, which makes things so damn easy The source code is stored on github, and we leverage github actions to automatically post new changes to AWS We leverage AWS S3 and a CloudFront Distribution to handle the CDN and certificates  How do you get the automatic deployment working Well github actions are pretty sweet and it allows us to run builds directly from github, which is a great feature.</description>
+    </item>
+    
+  </channel>
+</rss>
