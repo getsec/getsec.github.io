@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Getty Blog</title>
+    <link>/tags/</link>
+    <description>Recent content in Tags on Getty Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 29 Jan 2020 10:04:03 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Amazon</title>
+      <link>/tags/amazon/</link>
+      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
+      
+      <guid>/tags/amazon/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>AWS</title>
+      <link>/tags/aws/</link>
+      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
+      
+      <guid>/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>enumeration</title>
+      <link>/tags/enumeration/</link>
+      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
+      
+      <guid>/tags/enumeration/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>info</title>
+      <link>/tags/info/</link>
+      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
+      
+      <guid>/tags/info/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

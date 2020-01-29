@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Getty Blog</title>
+    <link>/posts/</link>
+    <description>Recent content in Posts on Getty Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 29 Jan 2020 10:04:03 +0000</lastBuildDate>
+    
+	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Describe all the things in AWS</title>
+      <link>/posts/cross-account-information-gathering/</link>
+      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
+      
+      <guid>/posts/cross-account-information-gathering/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security checking for python</title>
+      <link>/posts/bandit/</link>
+      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
+      
+      <guid>/posts/bandit/</guid>
+      <description>The basics Today we will be talking about bandit, a python static analysis tool that reviews your code for possible security flaws. We will be using bandit, lets create a virtual environment and use pip to install bandit.
+python -m venv venv source venv/bin/activate pip install bandit Lets use the following application below as an example.
+from os import system system(&amp;#39;sudo su&amp;#39;) Obviously using sudo su in a shell process isn&amp;rsquo;t good practice, but we&amp;rsquo;re just showing off the capabilities of bandit.</description>
+    </item>
+    
+  </channel>
+</rss>

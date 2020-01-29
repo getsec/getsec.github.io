@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/tags/amazon/</loc>
+    <lastmod>2020-01-29T10:04:03+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/aws/</loc>
+    <lastmod>2020-01-29T10:04:03+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/cross-account-information-gathering/</loc>
+    <lastmod>2020-01-29T10:04:03+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/enumeration/</loc>
+    <lastmod>2020-01-29T10:04:03+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-01-29T10:04:03+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/info/</loc>
+    <lastmod>2020-01-29T10:04:03+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/</loc>
+    <lastmod>2020-01-29T10:04:03+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/bandit/</loc>
+    <lastmod>2020-01-29T10:04:03+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-01-29T10:04:03+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+  </url>
+  
+</urlset>
