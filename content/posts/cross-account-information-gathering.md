@@ -69,6 +69,8 @@ time python mp-barrage.py  # 13.672 total
 
 Damn - pretty much sheds the time in half, currently I dont have the ability to run the old barrage script against multiple endpoints easily, but if we use the mp-barrage script, to scan one account, in three regions, with 41 endpoints, this is how long it takes.
 
+> Keep in mind I'm running this script on a 12 core computer - It maxes each core for the whole 13 seconds ^.^
+
 # Examples
 Example of the time running the script
 [![asciicast](https://asciinema.org/a/2cShOQoo5sEQW80AdC7t62YSb.svg)](https://asciinema.org/a/2cShOQoo5sEQW80AdC7t62YSb)
@@ -76,3 +78,9 @@ Example of the time running the script
 
 Example of the output being filled up.
 [![asciicast](https://asciinema.org/a/oTQno3cqlNfNM5eV9qAGZGevg.svg)](https://asciinema.org/a/oTQno3cqlNfNM5eV9qAGZGevg)
+
+# Conclusion
+
+Based off the above input it seems that this method provides a very fast and efficient way to query lots of AWS API endpoints to gather information.
+
+Hopefully this helps you all out :D
