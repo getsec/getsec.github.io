@@ -72,6 +72,15 @@ Well before we pass in any credentials, lets make sure we create an IAM user on 
                 "arn:aws:s3:::nathan-getty-hugo-blog/*"
             ],
             "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "cloudfront:CreateInvalidation"
+            ],
+            "Resource": [
+                "arn:aws:cloudfront::736903191495:distribution/E1GG62YQ9Q8RI9"
+            ],
+            "Effect": "Allow"
         }
     ]
 }

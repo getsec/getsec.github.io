@@ -209,7 +209,11 @@ time python3 barrage -m -o -c <span style="color:#e6db74">&#34;aws iam list-poli
 </code></pre></div><p>Thats a total of roughly 32 / 33 seconds. Now if we run this with the MP Barrage script the time should be down drasically. For this test we will replace the all-cmds file with only the API requests above.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">time python mp-barrage.py  <span style="color:#75715e"># 13.672 total</span>
 </code></pre></div><p>Damn - pretty much sheds the time in half, currently I dont have the ability to run the old barrage script against multiple endpoints easily, but if we use the mp-barrage script, to scan one account, in three regions, with 41 endpoints, this is how long it takes.</p>
-<!-- raw HTML omitted -->
+<h1 id="examples">Examples<a href="#examples" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>Example of the time running the script
+<a href="https://asciinema.org/a/2cShOQoo5sEQW80AdC7t62YSb"><img src="https://asciinema.org/a/2cShOQoo5sEQW80AdC7t62YSb.svg" alt="asciicast"></a></p>
+<p>Example of the output being filled up.
+<a href="https://asciinema.org/a/oTQno3cqlNfNM5eV9qAGZGevg"><img src="https://asciinema.org/a/oTQno3cqlNfNM5eV9qAGZGevg.svg" alt="asciicast"></a></p>
 
       </div></div>
   

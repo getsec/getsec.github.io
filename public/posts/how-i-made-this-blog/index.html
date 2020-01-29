@@ -171,6 +171,15 @@ So how is this blog made?  We use hugo to build the source and write all the art
                 <span style="color:#e6db74">&#34;arn:aws:s3:::nathan-getty-hugo-blog/*&#34;</span>
             ],
             <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>
+        },
+        {
+            <span style="color:#f92672">&#34;Action&#34;</span>: [
+                <span style="color:#e6db74">&#34;cloudfront:CreateInvalidation&#34;</span>
+            ],
+            <span style="color:#f92672">&#34;Resource&#34;</span>: [
+                <span style="color:#e6db74">&#34;arn:aws:cloudfront::736903191495:distribution/E1GG62YQ9Q8RI9&#34;</span>
+            ],
+            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>
         }
     ]
 }
