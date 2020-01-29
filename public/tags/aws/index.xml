@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>AWS on Getty Blog</title>
+    <title>AWS on Blog</title>
     <link>/tags/aws/</link>
-    <description>Recent content in AWS on Getty Blog</description>
+    <description>Recent content in AWS on Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 29 Jan 2020 10:04:03 +0000</lastBuildDate>

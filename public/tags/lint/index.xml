@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>lint on Getty Blog</title>
+    <title>lint on Blog</title>
     <link>/tags/lint/</link>
-    <description>Recent content in lint on Getty Blog</description>
+    <description>Recent content in lint on Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 29 Jan 2020 10:04:03 +0000</lastBuildDate>

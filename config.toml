@@ -1,6 +1,6 @@
 baseURL = "/"
 languageCode = "en-us"
-title = "Getty Blog"
+title = "Blog"
 theme = "terminal"
 
 [params]
@@ -76,3 +76,21 @@ gzip = false
 [[deployment.matchers]]
 pattern = "^.+\\.(html|xml|json)$"
 gzip = true
+
+[languages]
+  [languages.en]
+    languageName = "English"
+    subtitle = "@me"
+    keywords = ""
+    copyright = ""
+
+
+    [languages.en.params.logo]
+      logoText = "Terminal"
+      logoHomeLink = "/"
+
+    [languages.en.menu]
+      [[languages.en.menu.main]]
+        identifier = "about"
+        name = "About"
+        url = "/content/meta/about-me/"
