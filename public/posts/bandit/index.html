@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
   
-    <title>Security checking for python :: Getty Blog</title>
+    <title>Call the police - we got a bandit. :: Getty Blog</title>
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="The basics Today we will be talking about bandit, a python static analysis tool that reviews your code for possible security flaws. We will be using bandit, lets create a virtual environment and use pip to install bandit.
-python -m venv venv source venv/bin/activate pip install bandit Lets use the following application below as an example.
-from os import system system(&amp;#39;sudo su&amp;#39;) Obviously using sudo su in a shell process isn&amp;rsquo;t good practice, but we&amp;rsquo;re just showing off the capabilities of bandit."/>
-<meta name="keywords" content="AWS, Amazon, info, enumeration"/>
+<meta name="description" content="The basics Today I would like to share with you some security lessons when using python. How we can use static linting to check our code for possible security flaws leveraging bandit. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the power of the bandit. Not to highlight my inability to program. ☕️
+First as always, we will create a virtual environment."/>
+<meta name="keywords" content="python, security, lint"/>
 <meta name="robots" content="noodp"/>
 <link rel="canonical" href="/posts/bandit/" />
 
@@ -30,10 +29,9 @@ from os import system system(&amp;#39;sudo su&amp;#39;) Obviously using sudo su 
 
 
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Security checking for python :: Getty Blog — " />
-<meta name="twitter:description" content="The basics Today we will be talking about bandit, a python static analysis tool that reviews your code for possible security flaws. We will be using bandit, lets create a virtual environment and use pip to install bandit.
-python -m venv venv source venv/bin/activate pip install bandit Lets use the following application below as an example.
-from os import system system(&amp;#39;sudo su&amp;#39;) Obviously using sudo su in a shell process isn&amp;rsquo;t good practice, but we&amp;rsquo;re just showing off the capabilities of bandit." />
+<meta name="twitter:title" content="Call the police - we got a bandit. :: Getty Blog — " />
+<meta name="twitter:description" content="The basics Today I would like to share with you some security lessons when using python. How we can use static linting to check our code for possible security flaws leveraging bandit. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the power of the bandit. Not to highlight my inability to program. ☕️
+First as always, we will create a virtual environment." />
 <meta name="twitter:site" content="/" />
 <meta name="twitter:creator" content="Nathan Getty" />
 <meta name="twitter:image" content="">
@@ -41,12 +39,11 @@ from os import system system(&amp;#39;sudo su&amp;#39;) Obviously using sudo su 
 
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="Security checking for python :: Getty Blog — ">
-<meta property="og:description" content="The basics Today we will be talking about bandit, a python static analysis tool that reviews your code for possible security flaws. We will be using bandit, lets create a virtual environment and use pip to install bandit.
-python -m venv venv source venv/bin/activate pip install bandit Lets use the following application below as an example.
-from os import system system(&amp;#39;sudo su&amp;#39;) Obviously using sudo su in a shell process isn&amp;rsquo;t good practice, but we&amp;rsquo;re just showing off the capabilities of bandit." />
+<meta property="og:title" content="Call the police - we got a bandit. :: Getty Blog — ">
+<meta property="og:description" content="The basics Today I would like to share with you some security lessons when using python. How we can use static linting to check our code for possible security flaws leveraging bandit. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the power of the bandit. Not to highlight my inability to program. ☕️
+First as always, we will create a virtual environment." />
 <meta property="og:url" content="/posts/bandit/" />
-<meta property="og:site_name" content="Security checking for python" />
+<meta property="og:site_name" content="Call the police - we got a bandit." />
 <meta property="og:image" content="">
 <meta property="og:image:width" content="2048">
 <meta property="og:image:height" content="1024">
@@ -89,7 +86,7 @@ from os import system system(&amp;#39;sudo su&amp;#39;) Obviously using sudo su 
     
 <div class="post">
   <h1 class="post-title">
-    <a href="/posts/bandit/">Security checking for python</a></h1>
+    <a href="/posts/bandit/">Call the police - we got a bandit.</a></h1>
   <div class="post-meta">
       
     <span class="post-date">
@@ -106,13 +103,11 @@ from os import system system(&amp;#39;sudo su&amp;#39;) Obviously using sudo su 
   
   <span class="post-tags">
     
-    #<a href="/tags/aws/">AWS</a>&nbsp;
+    #<a href="/tags/python/">python</a>&nbsp;
     
-    #<a href="/tags/amazon/">Amazon</a>&nbsp;
+    #<a href="/tags/security/">security</a>&nbsp;
     
-    #<a href="/tags/info/">info</a>&nbsp;
-    
-    #<a href="/tags/enumeration/">enumeration</a>&nbsp;
+    #<a href="/tags/lint/">lint</a>&nbsp;
     
   </span>
   
@@ -121,18 +116,19 @@ from os import system system(&amp;#39;sudo su&amp;#39;) Obviously using sudo su 
 
   <div class="post-content"><div>
         <h1 id="the-basics">The basics<a href="#the-basics" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
-<p>Today we will be talking about bandit, a python static analysis tool that reviews your code for possible security flaws. We will be using bandit, lets create a virtual environment and use pip to install bandit.</p>
+<p>Today I would like to share with you some security lessons when using python. How we can use static linting to check our code for possible security flaws leveraging <em>bandit</em>. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the power of the <em>bandit</em>. Not to highlight my inability to program. ☕️</p>
+<p>First as always, we will create a virtual environment. We dont want to muck around with any of our old dependencies. <a href="https://xkcd.com/1987/">I love environments</a></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">python -m venv venv
 source venv/bin/activate
 pip install bandit
-</code></pre></div><p>Lets use the following application below as an example.</p>
+</code></pre></div><p>We can leverage the system function from the os library and pass in some pretty naughty input. No reason for that to be there.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#f92672">from</span> os <span style="color:#f92672">import</span> system
 
 system(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">sudo su</span><span style="color:#e6db74">&#39;</span>)
-</code></pre></div><p>Obviously using sudo su in a shell process isn&rsquo;t good practice, but we&rsquo;re just showing off the capabilities of bandit. So, lets run bandit against our file.</p>
+</code></pre></div><p>Lets run bandit against our app to see if there are any issues it finds with aforementioned code snippet.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">bandit app_name.py
 </code></pre></div><blockquote>
-<p>Below is an example of the response</p>
+<p>Lets take a look at that juicy output</p>
 </blockquote>
 <pre><code>Test results:
 &gt;&gt; Issue: [B605:start_process_with_a_shell] Starting a process with a shell: Seems safe, but may be changed in the future, consider rewriting without shell
@@ -171,7 +167,35 @@ Files skipped (0):
 </code></pre><p>This is pretty nice it gives us all the results we need. We can use these results in a bunch of different ways, but in what I do is grep the report and look to see if there are any &ldquo;High or Medium&rdquo; severity items, and then kill the CI/CD pipeline.</p>
 <h2 id="vscode-implementation">VSCode Implementation<a href="#vscode-implementation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>In VSCode, what you can do is use CMD+Shift+P while in your python application and select linter, and choose bandit, you may be asked to install it, choose yes, ensure you tell VSCode to use bandit once more, and now, if you hover over the marked text, you will see the error/warnings.</p>
+<h2 id="hey-nathan-what-if-i-want-to-do-this-in-a-cicd-thing">Hey Nathan! What if I want to do this in a CI/CD thing?<a href="#hey-nathan-what-if-i-want-to-do-this-in-a-cicd-thing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Oh damn jimmy, thats a pretty good idea. Now, I dont have an exact example but I this is how I would implement such a plan.</p>
+<ol>
+<li>With your CI/CD tool install the bandit library during your pre-build phase</li>
+<li>Create a shell script to run bandit and parse the output for something you&rsquo;d want. this is only <em>psuedo code</em></li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">function</span> run_bandit<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+        SEARCH_STR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Severity: HIGH &#34;</span>
+        <span style="color:#75715e"># Run bandit first of all, which is good</span>
+        bandit $MY_FILE 
+        bandit $MY_FILE | grep $SEARCH_STR
+<span style="color:#f92672">}</span>
 
+<span style="color:#75715e"># Run the bandit function and check to see if it passed</span>
+<span style="color:#75715e"># in the if statement, if the grep fails, that means we should get an exit code non-zero. Which means nothing was found</span>
+<span style="color:#75715e"># if we get a 0, that means the search string matched, which means we found something bad</span>
+run_bandit
+
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $? -ne <span style="color:#ae81ff">0</span> <span style="color:#f92672">]</span>
+<span style="color:#66d9ef">then</span>
+        echo <span style="color:#e6db74">&#34;We&#39;re good&#34;</span>
+        exit <span style="color:#ae81ff">0</span>
+<span style="color:#66d9ef">else</span>
+        echo <span style="color:#e6db74">&#34;Uh oh, looks like we found some errors!&#34;</span>
+        echo <span style="color:#e6db74">&#34;STOPPING BUILD&#34;</span>
+        exit <span style="color:#ae81ff">1</span>
+<span style="color:#66d9ef">fi</span>
+
+<span style="color:#ae81ff">111</span></code></pre></div>
       </div></div>
   
   <div class="pagination">
@@ -183,12 +207,19 @@ Files skipped (0):
     <div class="pagination__buttons">
       
       <span class="button previous">
-        <a href="/posts/cross-account-information-gathering/">
+        <a href="/posts/how-i-made-this-blog/">
           <span class="button__icon">←</span>
-          <span class="button__text">Describe all the things in AWS</span>
+          <span class="button__text">How I Made This Blog</span>
         </a>
       </span>
       
+      
+      <span class="button next">
+        <a href="/posts/cross-account-information-gathering/">
+          <span class="button__text">Describe all the things in AWS</span>
+          <span class="button__icon">→</span>
+        </a>
+      </span>
       
     </div>
   </div>

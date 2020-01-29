@@ -65,5 +65,32 @@
       <description></description>
     </item>
     
+    <item>
+      <title>lint</title>
+      <link>/tags/lint/</link>
+      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
+      
+      <guid>/tags/lint/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>/tags/python/</link>
+      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
+      
+      <guid>/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>security</title>
+      <link>/tags/security/</link>
+      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
+      
+      <guid>/tags/security/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
