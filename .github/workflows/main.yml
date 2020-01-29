@@ -1,27 +1,25 @@
-name: CI
+  
+name: Build and Deploy
 
-on: [push]
+on: push
 
 jobs:
   build:
-
+    name: Build and Deploy
     runs-on: ubuntu-latest
-
     steps:
-
       - uses: actions/checkout@v1
-        # with:
-        #   submodules: true
-
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: '0.62.2'
-          # extended: true
-
-      - name: Build
-        run: hugo --minify
-
+      - name: Install Hugo
+        run: |
+          HUGO_DOWNLOAD=hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz
+          wget https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/${HUGO_DOWNLOAD}
+          tar xvzf ${HUGO_DOWNLOAD} hugo
+          mv hugo $HOME/hugo
+        env:
+          HUGO_VERSION: 0.59.1
+      - name: Hugo Build
+        run: $HOME/hugo -v
+        
       - name: Deploy to S3
         if: github.ref == 'refs/heads/master'
         run: $HOME/hugo -v deploy --maxDeletes -1
