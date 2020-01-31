@@ -17,7 +17,7 @@
       <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
       
       <guid>/posts/cross-account-information-gathering/</guid>
-      <description>How can query multiple accounts for a lot of informaiton. Well theres a few ways we can do this. Honestly what I beleive is that leveraging a cross account role in each account is one the best ways to hadle this. This allows for us to have the one spot for control and access. If you have a way to deploy this role in an automated way, that would be best.</description>
+      <description>How can I query multiple AWS accounts for a lot of information. Well theres a few ways we can do this. Honestly what I believe is that leveraging a cross account role in each account is one the best ways to approach this. This allows for us to have the one spot for control and access. If you have a way to deploy this role in an automated way, that would be best.</description>
     </item>
     
   </channel>

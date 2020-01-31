@@ -6,8 +6,9 @@
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Whats the deal with blogs and shit? The main reason I wanted this blog is that running a normal website requires hosting a server, keeping it online, updating it and all the other jazz that I dont really care to manage
-So how is this blog made?  We use hugo to build the source and write all the articles in markdown format, which makes things so damn easy The source code is stored on github, and we leverage github actions to automatically post new changes to AWS We leverage AWS S3 and a CloudFront Distribution to handle the CDN and certificates  How do you get the automatic deployment working Well github actions are pretty sweet and it allows us to run builds directly from github, which is a great feature."/>
+<meta name="description" content="Wait, thats it.. This is going to be short.
+I use Hugo to dynamically generate all the content, and then use github pages to host it :)
+How To"/>
 <meta name="keywords" content=""/>
 <meta name="robots" content="noodp"/>
 <link rel="canonical" href="/posts/how-i-made-this-blog/" />
@@ -30,8 +31,9 @@ So how is this blog made?  We use hugo to build the source and write all the art
 
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="How I Made This Blog :: Blog — @me" />
-<meta name="twitter:description" content="Whats the deal with blogs and shit? The main reason I wanted this blog is that running a normal website requires hosting a server, keeping it online, updating it and all the other jazz that I dont really care to manage
-So how is this blog made?  We use hugo to build the source and write all the articles in markdown format, which makes things so damn easy The source code is stored on github, and we leverage github actions to automatically post new changes to AWS We leverage AWS S3 and a CloudFront Distribution to handle the CDN and certificates  How do you get the automatic deployment working Well github actions are pretty sweet and it allows us to run builds directly from github, which is a great feature." />
+<meta name="twitter:description" content="Wait, thats it.. This is going to be short.
+I use Hugo to dynamically generate all the content, and then use github pages to host it :)
+How To" />
 <meta name="twitter:site" content="/" />
 <meta name="twitter:creator" content="Nathan Getty" />
 <meta name="twitter:image" content="">
@@ -40,8 +42,9 @@ So how is this blog made?  We use hugo to build the source and write all the art
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="How I Made This Blog :: Blog — @me">
-<meta property="og:description" content="Whats the deal with blogs and shit? The main reason I wanted this blog is that running a normal website requires hosting a server, keeping it online, updating it and all the other jazz that I dont really care to manage
-So how is this blog made?  We use hugo to build the source and write all the articles in markdown format, which makes things so damn easy The source code is stored on github, and we leverage github actions to automatically post new changes to AWS We leverage AWS S3 and a CloudFront Distribution to handle the CDN and certificates  How do you get the automatic deployment working Well github actions are pretty sweet and it allows us to run builds directly from github, which is a great feature." />
+<meta property="og:description" content="Wait, thats it.. This is going to be short.
+I use Hugo to dynamically generate all the content, and then use github pages to host it :)
+How To" />
 <meta property="og:url" content="/posts/how-i-made-this-blog/" />
 <meta property="og:site_name" content="How I Made This Blog" />
 <meta property="og:image" content="">
@@ -151,88 +154,10 @@ So how is this blog made?  We use hugo to build the source and write all the art
   
 
   <div class="post-content"><div>
-        <h1 id="whats-the-deal-with-blogs-and-shit">Whats the deal with blogs and shit?<a href="#whats-the-deal-with-blogs-and-shit" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
-<p>The main reason I wanted this blog is that running a normal website requires hosting a server, keeping it online, updating it and all the other jazz that I dont really care to manage</p>
-<h1 id="so-how-is-this-blog-made">So how is this blog made?<a href="#so-how-is-this-blog-made" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
-<ol>
-<li>We use hugo to build the source and write all the articles in markdown format, which makes things so damn easy</li>
-<li>The source code is stored on github, and we leverage github actions to automatically post new changes to AWS</li>
-<li>We leverage AWS S3 and a CloudFront Distribution to handle the CDN and certificates</li>
-</ol>
-<h1 id="how-do-you-get-the-automatic-deployment-working">How do you get the automatic deployment working<a href="#how-do-you-get-the-automatic-deployment-working" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
-<p>Well github actions are pretty sweet and it allows us to run builds directly from github, which is a great feature. Heres the example of our yml file</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">  
-<span style="color:#66d9ef">name</span>: Build and Deploy
-
-<span style="color:#66d9ef">on</span>: push
-
-<span style="color:#66d9ef">jobs</span>:
-  <span style="color:#66d9ef">build</span>:
-    <span style="color:#66d9ef">name</span>: Build and Deploy
-    <span style="color:#66d9ef">runs-on</span>: ubuntu-latest
-    <span style="color:#66d9ef">steps</span>:
-      - <span style="color:#66d9ef">uses</span>: actions/checkout@v1
-      - <span style="color:#66d9ef">name</span>: Install Hugo
-        <span style="color:#66d9ef">run</span>: <span style="color:#e6db74">|
-</span><span style="color:#e6db74">         </span><span style="color:#e6db74"> </span><span style="color:#e6db74">HUGO_DOWNLOAD=hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz</span>
-          wget https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/${HUGO_DOWNLOAD}
-          tar xvzf ${HUGO_DOWNLOAD} hugo
-          mv hugo $HOME/hugo
-        <span style="color:#66d9ef">env</span>:
-          <span style="color:#66d9ef">HUGO_VERSION</span>: <span style="color:#ae81ff">0.59</span><span style="color:#ae81ff">.1</span>
-      - <span style="color:#66d9ef">name</span>: Hugo Build
-        <span style="color:#66d9ef">run</span>: $HOME/hugo -v
-        
-      - <span style="color:#66d9ef">name</span>: Deploy to S3
-        <span style="color:#66d9ef">if</span>: github.ref == <span style="color:#e6db74">&#39;refs/heads/master&#39;</span>
-        <span style="color:#66d9ef">run</span>: $HOME/hugo -v deploy --maxDeletes -<span style="color:#ae81ff">1</span>
-        <span style="color:#66d9ef">env</span>:
-          <span style="color:#66d9ef">AWS_ACCESS_KEY_ID</span>: ${{ secrets.HUGO_S3_KEY }}
-          <span style="color:#66d9ef">AWS_SECRET_ACCESS_KEY</span>: ${{ secrets.HUGO_S3_SECRET }}
-</code></pre></div><h1 id="wait-how-do-i-pass-in-the-credentials-securely">Wait, how do I pass in the credentials securely<a href="#wait-how-do-i-pass-in-the-credentials-securely" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
-<p>Well before we pass in any credentials, lets make sure we create an IAM user on your account that is only locked down to that bucket. This way, if these credentials get compromised, the scope will only be to that bucket and not your AWS account.</p>
-<ol>
-<li>Create an IAM User</li>
-<li>Create a IAM Policy that only allows access to that bucket</li>
-</ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
-    <span style="color:#f92672">&#34;Statement&#34;</span>: [
-        {
-            <span style="color:#f92672">&#34;Action&#34;</span>: [
-                <span style="color:#e6db74">&#34;s3:List*&#34;</span>,
-                <span style="color:#e6db74">&#34;s3:Put*&#34;</span>,
-                <span style="color:#e6db74">&#34;s3:DeleteObject&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;Resource&#34;</span>: [
-                <span style="color:#e6db74">&#34;arn:aws:s3:::nathan-getty-hugo-blog&#34;</span>,
-                <span style="color:#e6db74">&#34;arn:aws:s3:::nathan-getty-hugo-blog/*&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>
-        },
-        {
-            <span style="color:#f92672">&#34;Action&#34;</span>: [
-                <span style="color:#e6db74">&#34;cloudfront:CreateInvalidation&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;Resource&#34;</span>: [
-                <span style="color:#e6db74">&#34;arn:aws:cloudfront::736903191495:distribution/E1GG62YQ9Q8RI9&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>
-        }
-    ]
-}
-</code></pre></div><ol start="3">
-<li>Apply that policy to the user.</li>
-<li>Save the Access Key and Secret Key and copy them to your git settings <a href="https://github.com/getsec/YOURREPO/settings/secrets">https://github.com/getsec/YOURREPO/settings/secrets</a></li>
-<li>Add the keys and then reference them in your main.yml config file.</li>
-<li>Thats it</li>
-</ol>
-<h1 id="resources">Resources<a href="#resources" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
-<ol>
-<li><a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/about-github-actions">GitHub Actions</a></li>
-<li><a href="https://gohugo.io/getting-started/quick-start/">Hugo Getting Started</a></li>
-<li><a href="https://github.com/nathany/hugo-deploy">Hugo + Github Actions + AWS S3 Deployment</a></li>
-</ol>
+        <h1 id="wait-thats-it">Wait, thats it..<a href="#wait-thats-it" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>This is going to be short.</p>
+<p>I use Hugo to dynamically generate all the content, and then use github pages to host it :)</p>
+<p><a href="https://gohugo.io/hosting-and-deployment/hosting-on-github/">How To</a></p>
 
       </div></div>
   

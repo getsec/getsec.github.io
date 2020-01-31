@@ -17,8 +17,9 @@
       <pubDate>Wed, 29 Jan 2020 11:05:56 -0600</pubDate>
       
       <guid>/posts/how-i-made-this-blog/</guid>
-      <description>Whats the deal with blogs and shit? The main reason I wanted this blog is that running a normal website requires hosting a server, keeping it online, updating it and all the other jazz that I dont really care to manage
-So how is this blog made?  We use hugo to build the source and write all the articles in markdown format, which makes things so damn easy The source code is stored on github, and we leverage github actions to automatically post new changes to AWS We leverage AWS S3 and a CloudFront Distribution to handle the CDN and certificates  How do you get the automatic deployment working Well github actions are pretty sweet and it allows us to run builds directly from github, which is a great feature.</description>
+      <description>Wait, thats it.. This is going to be short.
+I use Hugo to dynamically generate all the content, and then use github pages to host it :)
+How To</description>
     </item>
     
   </channel>
