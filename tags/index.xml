@@ -6,10 +6,46 @@
     <description>Recent content in Tags on Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 29 Jan 2020 11:05:56 -0600</lastBuildDate>
+    <lastBuildDate>Sun, 02 Feb 2020 11:01:50 -0600</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Amazon</title>
+      <link>/tags/amazon/</link>
+      <pubDate>Sun, 02 Feb 2020 11:01:50 -0600</pubDate>
+      
+      <guid>/tags/amazon/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>AWS</title>
+      <link>/tags/aws/</link>
+      <pubDate>Sun, 02 Feb 2020 11:01:50 -0600</pubDate>
+      
+      <guid>/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cloud</title>
+      <link>/tags/cloud/</link>
+      <pubDate>Sun, 02 Feb 2020 11:01:50 -0600</pubDate>
+      
+      <guid>/tags/cloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>security</title>
+      <link>/tags/security/</link>
+      <pubDate>Sun, 02 Feb 2020 11:01:50 -0600</pubDate>
+      
+      <guid>/tags/security/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>blog</title>
@@ -26,24 +62,6 @@
       <pubDate>Wed, 29 Jan 2020 11:05:56 -0600</pubDate>
       
       <guid>/tags/meta/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Amazon</title>
-      <link>/tags/amazon/</link>
-      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
-      
-      <guid>/tags/amazon/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>AWS</title>
-      <link>/tags/aws/</link>
-      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
-      
-      <guid>/tags/aws/</guid>
       <description></description>
     </item>
     
@@ -80,15 +98,6 @@
       <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
       
       <guid>/tags/python/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>security</title>
-      <link>/tags/security/</link>
-      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
-      
-      <guid>/tags/security/</guid>
       <description></description>
     </item>
     
