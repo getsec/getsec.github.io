@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog</title>
+    <link>/</link>
+    <description>Recent content on Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 02 Feb 2020 11:01:50 -0600</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cloud Security Commandments</title>
+      <link>/posts/cloud-security-commandments/</link>
+      <pubDate>Sun, 02 Feb 2020 11:01:50 -0600</pubDate>
+      
+      <guid>/posts/cloud-security-commandments/</guid>
+      <description>Preface The following list is my opinion on some of the top cloud controls that should be enabled within your environment. These can be security controls, processes, procedures or systems you create to manage and monitor your resources and users.
+The List  Thou shalt use encryption everywhere. If its a checkbox, it gets turned on. Thou shalt not create public facing infrastructure without authorization or approval Thou shalt not blindly grant administration privileges to any principal Thou shalt follow the principle of least privilege when you are deploying policies or permissions Thou shalt not modify firewall rules to allow for all traffic.</description>
+    </item>
+    
+    <item>
+      <title>About Me</title>
+      <link>/content/meta/about-me/</link>
+      <pubDate>Wed, 29 Jan 2020 15:51:21 -0600</pubDate>
+      
+      <guid>/content/meta/about-me/</guid>
+      <description>About me I&amp;rsquo;m just a cloud security engineer who writes stuff about my work and life.
+Disclaimer The views and opinions expressed in these articles are those of the authors and do not reflect those of any organization, business or third party the author may be related to.</description>
+    </item>
+    
+    <item>
+      <title>How I Made This Blog</title>
+      <link>/posts/how-i-made-this-blog/</link>
+      <pubDate>Wed, 29 Jan 2020 11:05:56 -0600</pubDate>
+      
+      <guid>/posts/how-i-made-this-blog/</guid>
+      <description>Wait, thats it.. This is going to be short.
+I use Hugo to dynamically generate all the content, and then use github pages to host it :)
+How To</description>
+    </item>
+    
+    <item>
+      <title>Call the police - we got a bandit.</title>
+      <link>/posts/bandit/</link>
+      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
+      
+      <guid>/posts/bandit/</guid>
+      <description>The basics Today I would like to share with you some security lessons when using python. How we can use static linting to check our code for possible security flaws leveraging bandit. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the power of the bandit. Not to highlight my inability to program. ☕️
+First as always, we will create a virtual environment.</description>
+    </item>
+    
+    <item>
+      <title>Describe all the things in AWS</title>
+      <link>/posts/cross-account-information-gathering/</link>
+      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
+      
+      <guid>/posts/cross-account-information-gathering/</guid>
+      <description>How can I query multiple AWS accounts for a lot of information. Well theres a few ways we can do this. Honestly what I believe is that leveraging a cross account role in each account is one the best ways to approach this. This allows for us to have the one spot for control and access. If you have a way to deploy this role in an automated way, that would be best.</description>
+    </item>
+    
+  </channel>
+</rss>

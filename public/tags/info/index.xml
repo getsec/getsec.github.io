@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>info on Blog</title>
+    <link>/tags/info/</link>
+    <description>Recent content in info on Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 29 Jan 2020 10:04:03 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/info/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Describe all the things in AWS</title>
+      <link>/posts/cross-account-information-gathering/</link>
+      <pubDate>Wed, 29 Jan 2020 10:04:03 +0000</pubDate>
+      
+      <guid>/posts/cross-account-information-gathering/</guid>
+      <description>How can I query multiple AWS accounts for a lot of information. Well theres a few ways we can do this. Honestly what I believe is that leveraging a cross account role in each account is one the best ways to approach this. This allows for us to have the one spot for control and access. If you have a way to deploy this role in an automated way, that would be best.</description>
+    </item>
+    
+  </channel>
+</rss>

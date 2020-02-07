@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cloud on Blog</title>
+    <link>/tags/cloud/</link>
+    <description>Recent content in Cloud on Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 02 Feb 2020 11:01:50 -0600</lastBuildDate>
+    
+	<atom:link href="/tags/cloud/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cloud Security Commandments</title>
+      <link>/posts/cloud-security-commandments/</link>
+      <pubDate>Sun, 02 Feb 2020 11:01:50 -0600</pubDate>
+      
+      <guid>/posts/cloud-security-commandments/</guid>
+      <description>Preface The following list is my opinion on some of the top cloud controls that should be enabled within your environment. These can be security controls, processes, procedures or systems you create to manage and monitor your resources and users.
+The List  Thou shalt use encryption everywhere. If its a checkbox, it gets turned on. Thou shalt not create public facing infrastructure without authorization or approval Thou shalt not blindly grant administration privileges to any principal Thou shalt follow the principle of least privilege when you are deploying policies or permissions Thou shalt not modify firewall rules to allow for all traffic.</description>
+    </item>
+    
+  </channel>
+</rss>
