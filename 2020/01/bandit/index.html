@@ -35,7 +35,7 @@
                 "url": "\/cover.png",
                 "width":  800 ,
                 "height":  600 
-            },"genre": "posts","keywords": "python, security, programming","wordcount":  603 ,
+            },"genre": "posts","keywords": "python, security, programming","wordcount":  597 ,
         "url": "\/2020\/01\/bandit\/","datePublished": "2020-01-26T21:57:40\x2b08:00","dateModified": "2020-01-26T21:57:40\x2b08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
                 "@type": "Organization",
                 "name": "xxxx",
@@ -50,7 +50,7 @@
     </script><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/css/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/lib/forkawesome/forkawesome.min.css"><link rel="stylesheet" href="/css/lib/animate/animate.min.css"></head>
     <body><script>
             if (!window.localStorage || !window.localStorage.getItem('theme')) {
-                window.isDark = '' === 'dark';
+                window.isDark = 'dark' === 'dark';
             } else {
                 window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
             }
@@ -83,14 +83,18 @@
                     <i class="fas fa-user-circle fa-fw"></i>Nathan Getty
                 </a>&nbsp;</div>
             <div class="post-meta-other"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2020-01-26>2020-01-26</time>&nbsp;
-                <i class="fas fa-pencil-alt fa-fw"></i>about 603 words&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 597 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>3 min&nbsp;</div>
         </div><div class="post-toc" id="post-toc">
                 <h2 class="post-toc-title">Contents</h2>
                 <div class="post-toc-content"><nav id="TableOfContents">
   <ul>
-    <li><a href="#intro">Intro</a></li>
-    <li><a href="#jumping-into-it">Jumping into it</a></li>
+    <li><a href="#preface">Preface</a></li>
+    <li><a href="#jumping-into-it">Jumping into it</a>
+      <ul>
+        <li><a href="#example-output">Example Output</a></li>
+      </ul>
+    </li>
     <li><a href="#vscode-implementation">VSCode Implementation</a></li>
     <li><a href="#hey-nathan-what-if-i-want-to-do-this-in-a-cicd-thing">Hey Nathan! What if I want to do this in a CI/CD thing?</a></li>
   </ul>
@@ -106,15 +110,19 @@
                     </summary>
                     <div class="post-toc-content"><nav id="TableOfContentsMobile">
   <ul>
-    <li><a href="#intro">Intro</a></li>
-    <li><a href="#jumping-into-it">Jumping into it</a></li>
+    <li><a href="#preface">Preface</a></li>
+    <li><a href="#jumping-into-it">Jumping into it</a>
+      <ul>
+        <li><a href="#example-output">Example Output</a></li>
+      </ul>
+    </li>
     <li><a href="#vscode-implementation">VSCode Implementation</a></li>
     <li><a href="#hey-nathan-what-if-i-want-to-do-this-in-a-cicd-thing">Hey Nathan! What if I want to do this in a CI/CD thing?</a></li>
   </ul>
 </nav></div>
                 </details>
-            </div><div class="post-content"><a class="post-dummy-target" id="intro"></a><h2>Intro</h2>
-<p>Today I would like to share with you some security lessons when using python. How we can use static linting to check our code for possible security flaws leveraging <em>bandit</em>. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the power of the <em>bandit</em>. Not to highlight my inability to program. ☕️</p>
+            </div><div class="post-content"><a class="post-dummy-target" id="preface"></a><h2>Preface</h2>
+<p>Today I would like to share with you some security tips when using python. We can use static linting to check our code for possible security flaws leveraging <em>bandit</em>. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the use cases of the <em>bandit</em>. Not to highlight my inability to program. ☕️</p>
 <a class="post-dummy-target" id="jumping-into-it"></a><h2>Jumping into it</h2>
 <p>First as always, we will create a virtual environment. We dont want to muck around with any of our old dependencies. <a href="https://xkcd.com/1987/" target="_blank">I love environments</a>
 </p>
@@ -130,7 +138,7 @@
 pip install bandit
 </code></pre></td></tr></table>
 </div>
-</div><p>We can leverage the system function from the os library and pass in some pretty naughty input. No reason for that to be there.</p>
+</div><p>We can leverage the system function from the os library and pass in some pretty naughty input. <em>No reason for that to be there.</em></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -152,7 +160,7 @@ pip install bandit
 <pre class="chroma"><code class="language-sh" data-lang="sh">bandit app_name.py
 </code></pre></td></tr></table>
 </div>
-</div><p><em>Lets take a look at that juicy output</em></p>
+</div><a class="post-dummy-target" id="example-output"></a><h3>Example Output</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -296,7 +304,7 @@ run_bandit
         </div>
         <div class="post-info-line">
             <div class="post-info-md"></div>
-            <div class="post-info-share"><span><a href="//twitter.com/share?url=%2f2020%2f01%2fbandit%2f&amp;text=%f0%9f%a4%a0%20Bandit%20on%20the%20loose&amp;via=xxxx" target="_blank" title="Share on Twitter">
+            <div class="post-info-share"><span><a href="//twitter.com/share?url=%2f2020%2f01%2fbandit%2f&amp;text=%f0%9f%a4%a0%20Bandit%20on%20the%20loose&amp;via=%40get_sec" target="_blank" title="Share on Twitter">
             <i class="fab fa-twitter fa-fw"></i>
         </a><a href="//www.facebook.com/sharer/sharer.php?u=%2f2020%2f01%2fbandit%2f" target="_blank" title="Share on Facebook">
             <i class="fab fa-facebook-square fa-fw"></i>

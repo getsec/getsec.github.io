@@ -1,8 +1,8 @@
 # 🤠 Bandit on the loose
 
-## Intro
+## Preface
 
-Today I would like to share with you some security lessons when using python. How we can use static linting to check our code for possible security flaws leveraging *bandit*. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the power of the *bandit*. Not to highlight my inability to program. ☕️
+Today I would like to share with you some security tips when using python. We can use static linting to check our code for possible security flaws leveraging *bandit*. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the use cases of the *bandit*. Not to highlight my inability to program. ☕️
 
 ## Jumping into it
 
@@ -13,7 +13,7 @@ source venv/bin/activate
 pip install bandit
 ```
 
-We can leverage the system function from the os library and pass in some pretty naughty input. No reason for that to be there.
+We can leverage the system function from the os library and pass in some pretty naughty input. *No reason for that to be there.*
 
 ```py
 from os import system
@@ -27,7 +27,9 @@ Lets run bandit against our app to see if there are any issues it finds with afo
 bandit app_name.py
 ```
 
-*Lets take a look at that juicy output*
+
+### Example Output
+
 
 ```
 Test results:
@@ -76,6 +78,7 @@ In VSCode, what you can do is use CMD+Shift+P while in your python application a
 ## Hey Nathan! What if I want to do this in a CI/CD thing?
 
 Oh damn jimmy, thats a pretty good idea. Now, I dont have an exact example but I this is how I would implement such a plan.
+
 
 1. With your CI/CD tool install the bandit library during your pre-build phase
 2. Create a shell script to run bandit and parse the output for something you'd want. this is only *psuedo code*

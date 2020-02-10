@@ -18,7 +18,7 @@
       <pubDate>Sun, 26 Jan 2020 21:57:40 +0800</pubDate>
       
       <guid>/2020/01/bandit/</guid>
-      <description>Intro Today I would like to share with you some security lessons when using python. How we can use static linting to check our code for possible security flaws leveraging bandit. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the power of the bandit. Not to highlight my inability to program. ☕️
+      <description>Preface Today I would like to share with you some security tips when using python. We can use static linting to check our code for possible security flaws leveraging bandit. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the use cases of the bandit. Not to highlight my inability to program. ☕️
 Jumping into it First as always, we will create a virtual environment.</description>
     </item>
     
