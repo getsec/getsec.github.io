@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>programming on @me - Nathan Getty Blog</title>
-    <link>/index.html/tags/programming/</link>
+    <link>/tags/programming/</link>
     <description>Recent content in programming on @me - Nathan Getty Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Sun, 26 Jan 2020 21:57:40 +0800</lastBuildDate>
     
-	<atom:link href="/index.html/tags/programming/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/programming/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>😨 So many AWS accounts, so much information!?</title>
-      <link>/index.html/2020/01/cross-account-scannin/</link>
+      <link>/2020/01/cross-account-scannin/</link>
       <pubDate>Sun, 26 Jan 2020 21:57:40 +0800</pubDate>
       
-      <guid>/index.html/2020/01/cross-account-scannin/</guid>
+      <guid>/2020/01/cross-account-scannin/</guid>
       <description>How can I query multiple AWS accounts for a lot of information. Well theres a few ways we can do this. Honestly what I believe is that leveraging a cross account role in each account is one the best ways to approach this. This allows for us to have the one spot for control and access. If you have a way to deploy this role in an automated way, that would be best.</description>
     </item>
     
     <item>
       <title>🤠 Bandit on the loose</title>
-      <link>/index.html/2020/01/bandit/</link>
+      <link>/2020/01/bandit/</link>
       <pubDate>Sun, 26 Jan 2020 21:57:40 +0800</pubDate>
       
-      <guid>/index.html/2020/01/bandit/</guid>
+      <guid>/2020/01/bandit/</guid>
       <description>Preface Today I would like to share with you some security tips when using python. We can use static linting to check our code for possible security flaws leveraging bandit. There will be some pretty obvious indicators of bad programming within this document, but only to demonstrate the use cases of the bandit. Not to highlight my inability to program. ☕️
 Jumping into it First as always, we will create a virtual environment.</description>
     </item>
