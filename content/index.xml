@@ -2,40 +2,40 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Contents on @me - Nathan Getty Blog</title>
-    <link>/content/</link>
+    <link>/index.html/content/</link>
     <description>Recent content in Contents on @me - Nathan Getty Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Sun, 01 Dec 2019 21:57:40 +0800</lastBuildDate>
     
-	<atom:link href="/content/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/index.html/content/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Markdown Syntax Guide</title>
-      <link>/content/markdown-syntax/</link>
+      <link>/index.html/content/markdown-syntax/</link>
       <pubDate>Sun, 01 Dec 2019 21:57:40 +0800</pubDate>
       
-      <guid>/content/markdown-syntax/</guid>
+      <guid>/index.html/content/markdown-syntax/</guid>
       <description>&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Emoji Support</title>
-      <link>/content/emoji-support/</link>
+      <link>/index.html/content/emoji-support/</link>
       <pubDate>Tue, 01 Oct 2019 17:55:28 +0800</pubDate>
       
-      <guid>/content/emoji-support/</guid>
+      <guid>/index.html/content/emoji-support/</guid>
       <description>&lt;p&gt;Emoji can be enabled in a Hugo project in a number of ways.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Rich Content</title>
-      <link>/content/rich-content/</link>
+      <link>/index.html/content/rich-content/</link>
       <pubDate>Sun, 01 Sep 2019 18:06:32 +0800</pubDate>
       
-      <guid>/content/rich-content/</guid>
+      <guid>/index.html/content/rich-content/</guid>
       <description>&lt;p&gt;Hugo ships with several &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugo-s-built-in-shortcodes&#34; target=&#34;_blank&#34;&gt;Built-in Shortcodes&lt;/a&gt;
  for rich content, along with a &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34; target=&#34;_blank&#34;&gt;Privacy Config&lt;/a&gt;
  and a set of Simple Shortcodes that enable static and no-JS versions of various social media embeds.&lt;/p&gt;</description>
@@ -43,10 +43,10 @@
     
     <item>
       <title>About LoveIt</title>
-      <link>/content/about/</link>
+      <link>/index.html/content/about/</link>
       <pubDate>Fri, 02 Aug 2019 11:04:49 +0800</pubDate>
       
-      <guid>/content/about/</guid>
+      <guid>/index.html/content/about/</guid>
       <description>LoveIt :(far fa-heart): is a clean, elegant but advanced blog theme for Hugo developed by Dillon .
 It is based on the original LeaveIt Theme and KeepIt Theme .
 Hugo Theme LoveIt Features Performance and SEO  :(fas fa-rocket): Optimized for performance: 99/100 on mobile and 100/100 on desktop in Google PageSpeed Insights  :(fab fa-searchengin): Optimized SEO performance with a correct SEO SCHEMA based on JSON-LD :(fab fa-google): Google Analytics support :(fas fa-search): Search engine verification support (Google, Bind, Yandex and Baidu) :(fas fa-tachometer-alt): CDN for all third-party libraries support :(far fa-images): Automatically converted images with Lazy Load by lazysizes   Appearance and Layout  :(fas fa-desktop): / :(fas fa-mobile): Responsive layout :(fas fa-moon): / :(fas fa-sun): Mode :(fas fa-layer-group): A More coerent style beetwen page and sections :(fas fa-ellipsis-h): Pagination support :(far fa-list-alt): Easy-to-use and self-expanding article catalog, while adapting to the mobile side :(fas fa-language): Multilanguage support and I18N ready :(fab fa-css3-alt): Beautiful CSS animation  Social and Comment Systems  :(far fa-user): Gravatar support by Gravatar  :(fas fa-user-circle): Local Avatar support :(far fa-id-card): Up to 54 social sites supported :(fas fa-share-square): Share post support :(far fa-comment): Disqus comment system support by Disqus  :(far fa-comment-dots): Gitalk comment system support by Gitalk  :(far fa-comment-alt): Valine comment system support by Valine   Extended Features  :(fas fa-code): Automatically highlighting code by chroma in Hugo :(fab fa-font-awesome): Extended markdown syntax for Font Awesome icons :(fas fa-square-root-alt): Math formula support by Katex  :(fas fa-project-diagram): Diagram syntax shortcode support by mermaid  :(fas fa-music): Embedded music player support by APlayer and MetingJS  :(fas fa-tv): Bilibili player support :(far fa-bell): Kinds of admonitions shortcode support :(fas fa-align-left): Custom align and float style shortcodes support :(fas fa-i-cursor): Animated typing support by TypeIt  :(far fa-clock): Animated coutdown support by jQuery.</description>
@@ -54,10 +54,10 @@ Hugo Theme LoveIt Features Performance and SEO  :(fas fa-rocket): Optimized for 
     
     <item>
       <title>Placeholder Text</title>
-      <link>/content/placeholder-text/</link>
+      <link>/index.html/content/placeholder-text/</link>
       <pubDate>Thu, 01 Aug 2019 18:02:41 +0800</pubDate>
       
-      <guid>/content/placeholder-text/</guid>
+      <guid>/index.html/content/placeholder-text/</guid>
       <description>&lt;p&gt;Lorem est tota propiore conpellat pectoribus de
 pectora summo.&lt;/p&gt;</description>
     </item>
