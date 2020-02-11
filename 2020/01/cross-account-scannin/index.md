@@ -1,4 +1,4 @@
-# 😨 So many AWS accounts, so much information!?
+# So many AWS accounts, so much information!?
 
 
 ## How can I query multiple AWS accounts for a lot of information.

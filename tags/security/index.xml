@@ -13,7 +13,7 @@
     
     
     <item>
-      <title>🙏🏼 Cloud Security Commandments</title>
+      <title>Cloud Security Commandments</title>
       <link>/2020/01/csc/</link>
       <pubDate>Tue, 28 Jan 2020 21:57:40 +0800</pubDate>
       
@@ -23,7 +23,17 @@ The List  Thou shalt use encryption everywhere. If its a checkbox, it gets turne
     </item>
     
     <item>
-      <title>🤠 Bandit on the loose</title>
+      <title>AWS Automated Remediation Part 1: Security Groups</title>
+      <link>/2020/01/aws-remedy-1/</link>
+      <pubDate>Sun, 26 Jan 2020 21:57:40 +0800</pubDate>
+      
+      <guid>/2020/01/aws-remedy-1/</guid>
+      <description>Prelude This is going to be the first in many auto-remediation blog posts! Each one will append more and more to our SAM template. I’m planning on making this a multi-part series where we develop a fully customized system to automatically remediating high risk findings.
+It sure is annoying having to revoke open security groups. You have to log into the console, navigate to EC2, find the violation, and remove the open ingress port and CIDR range.</description>
+    </item>
+    
+    <item>
+      <title>Bandit on the run!</title>
       <link>/2020/01/bandit/</link>
       <pubDate>Sun, 26 Jan 2020 21:57:40 +0800</pubDate>
       

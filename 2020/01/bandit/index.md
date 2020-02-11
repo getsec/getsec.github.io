@@ -1,4 +1,4 @@
-# 🤠 Bandit on the loose
+# Bandit on the run!
 
 ## Preface
 

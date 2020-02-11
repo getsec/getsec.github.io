@@ -1,4 +1,4 @@
-# 🙏🏼 Cloud Security Commandments
+# Cloud Security Commandments
 
 
 
@@ -27,7 +27,7 @@ We’ve all done this at some time. Somethings not working, you slap an admin po
 ## Thou shalt follow the principle of least privilege when you are deploying policies or permissions
 This is similar to the third commandment. I’ve had some hard time defining what least privilege is when I worked for other employers. Is least privilege the implementation of ONLY the specific API’s, or is it for the implementation of a suite of services / API’s required to do the job needed. I have done a lot here and in my personal opinion, I believe that creating the policies and permissions for a set of API’s or services allows for a quick implementation of least privilege. As an example, if I want to setup least privilege for a data analytics team in AWS. I would grant permissions for S3 (only buckets needed), Sage Maker, Glue, KMS (Encrypt/Decrypt), and any other services they would need to do their work. If I was creating a policy for infrastructure teams, I would give them access to manage EC2 instances in the VPC, r/w access to the needed buckets, access to create certain (non administrative) IAM instance profiles, systems manager access and whatever else they may need. I would not give them the PowerUsers policy, although that may be the fastest way, it grants them way more privileges than they need.
 
-# Thou shalt not modify firewall rules to allow for all traffic.
+## Thou shalt not modify firewall rules to allow for all traffic.
 This is a personal one for me. I’ve had to deal with a lot of environments where developers had opened security groups open to the internet, while this is not necessarily malicious, it allows for attackers to scan and attempt to brute force access into our environment. To be clear, most developers who do this don’t do it with malicious intent, normally they need to test to make sure somethings working - or they do this as a troubleshooting step, so don’t get too upset at the devs. 
 
 ## Thou shalt leverage key based authentication over password based authentication if applicable
