@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Tue, 28 Jan 2020 21:57:40 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 08 Feb 2020 21:57:40 +0800</lastBuildDate>
     
 	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>AWS Automated Remediation - Part 1: Security Groups</title>
+      <link>/2020/02/aws-remedy-1/</link>
+      <pubDate>Sat, 08 Feb 2020 21:57:40 +0800</pubDate>
+      
+      <guid>/2020/02/aws-remedy-1/</guid>
+      <description>Prelude This is going to be the first in many auto-remediation blog posts! Each one will append more and more to our SAM template. I’m planning on making this a multi-part series where we develop a fully customized system to automatically remediating high risk findings.
+It sure is annoying having to revoke open security groups. You have to log into the console, navigate to EC2, find the violation, and remove the open ingress port and CIDR range.</description>
+    </item>
     
     <item>
       <title>Cloud Security Commandments</title>
@@ -20,16 +30,6 @@
       <guid>/2020/01/csc/</guid>
       <description>Preface The following list is my opinion on some of the top cloud controls that should be enabled within your environment. These can be security controls, processes, procedures or systems you create to manage and monitor your resources and users.
 The List  Thou shalt use encryption everywhere. If its a checkbox, it gets turned on. Thou shalt not create public facing infrastructure without authorization or approval Thou shalt not blindly grant administration privileges to any principal Thou shalt follow the principle of least privilege when you are deploying policies or permissions Thou shalt not modify firewall rules to allow for all traffic.</description>
-    </item>
-    
-    <item>
-      <title>AWS Automated Remediation Part 1: Security Groups</title>
-      <link>/2020/01/aws-remedy-1/</link>
-      <pubDate>Sun, 26 Jan 2020 21:57:40 +0800</pubDate>
-      
-      <guid>/2020/01/aws-remedy-1/</guid>
-      <description>Prelude This is going to be the first in many auto-remediation blog posts! Each one will append more and more to our SAM template. I’m planning on making this a multi-part series where we develop a fully customized system to automatically remediating high risk findings.
-It sure is annoying having to revoke open security groups. You have to log into the console, navigate to EC2, find the violation, and remove the open ingress port and CIDR range.</description>
     </item>
     
     <item>

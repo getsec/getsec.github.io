@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>AWS Automated Remediation - Part 1: Security Groups | @me - Nathan Getty Blog</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp" />
+<meta name="Description" content="Automatically remediating poorly implemented security groups"><link rel="prev" href="/2020/01/csc/" /><link rel="canonical" href="/2020/02/aws-remedy-1/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff"><meta property="og:title" content="AWS Automated Remediation - Part 1: Security Groups" />
+<meta property="og:description" content="Automatically remediating poorly implemented security groups" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/2020/02/aws-remedy-1/" />
+<meta property="article:published_time" content="2020-02-08T21:57:40+08:00" />
+<meta property="article:modified_time" content="2020-02-08T21:57:40+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AWS Automated Remediation - Part 1: Security Groups"/>
+<meta name="twitter:description" content="Automatically remediating poorly implemented security groups"/>
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "AWS Automated Remediation - Part 1: Security Groups",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "\/2020\/02\/aws-remedy-1\/"
+        },"image": {
+                "@type": "ImageObject",
+                "url": "\/cover.png",
+                "width":  800 ,
+                "height":  600 
+            },"genre": "posts","keywords": "aws, security, automation","wordcount":  987 ,
+        "url": "\/2020\/02\/aws-remedy-1\/","datePublished": "2020-02-08T21:57:40\x2b08:00","dateModified": "2020-02-08T21:57:40\x2b08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+                "@type": "Organization",
+                "name": "xxxx",
+                "logo": {
+                "@type": "ImageObject",
+                "url": "\/logo.png",
+                "width":  127 ,
+                "height":  40 
+                }
+            },"description": "Automatically remediating poorly implemented security groups"
+    }
+    </script><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/css/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/lib/forkawesome/forkawesome.min.css"><link rel="stylesheet" href="/css/lib/animate/animate.min.css"></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {
+                window.isDark = 'dark' === 'dark';
+            } else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-header animated bounceIn">
+            <a href="/">@me - Nathan Getty Blog</a>
+        </div>
+        <div class="navbar-menu"><a class="menu-item" href="/posts" title="">Posts</a><a class="menu-item" href="/tags" title="">Tags</a><a class="menu-item" href="/about" title="">About</a><a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw" title="Switch Theme"></i></a>
+        </div>
+    </div>
+</nav><nav class="navbar-mobile">
+    <div class="navbar-container">
+        <div class="navbar-header">
+            <div class="navbar-header-title animated bounceIn">
+                <a href="/">@me - Nathan Getty Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="navbar-menu" id="mobile-menu"><a class="menu-item" href="/posts" title="">Posts</a><a class="menu-item" href="/tags" title="">Tags</a><a class="menu-item" href="/about" title="">About</a><a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw" title="Switch Theme"></i></a>
+        </div>
+    </div>
+</nav>
+<main class="main">
+                <div class="container"><article class="page"><h1 class="post-title animated flipInX">AWS Automated Remediation - Part 1: Security Groups</h1><div class="post-meta">
+            <div class="post-meta-main"><a class="author" href="https://github.com/getsec" rel="author" target="_blank">
+                    <i class="fas fa-user-circle fa-fw"></i>Nathan Getty
+                </a>&nbsp;</div>
+            <div class="post-meta-other"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2020-02-08>2020-02-08</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 987 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>5 min&nbsp;</div>
+        </div><div class="post-toc" id="post-toc">
+                <h2 class="post-toc-title">Contents</h2>
+                <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#prelude">Prelude</a></li>
+    <li><a href="#prerequisites">Prerequisites</a></li>
+    <li><a href="#main">Main</a>
+      <ul>
+        <li><a href="#the-template">The Template</a>
+          <ul>
+            <li><a href="#securitygroupremediationlambda">SecurityGroupRemediationLambda</a></li>
+            <li><a href="#scheduledrule">ScheduledRule</a></li>
+            <li><a href="#lambdainvokepermission">LambdaInvokePermission</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#installing-the-infrastructure">Installing the infrastructure</a>
+      <ul>
+        <li><a href="#download-the-starter-repo">Download the starter repo</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav></div>
+            </div>
+            <div class="post-toc-mobile" id="post-toc-mobile">
+                <details>
+                    <summary>
+                        <div class="post-toc-title">
+                            <span>Contents</span>
+                            <span><i class="details icon fas fa-angle-down"></i></span>
+                        </div>
+                    </summary>
+                    <div class="post-toc-content"><nav id="TableOfContentsMobile">
+  <ul>
+    <li><a href="#prelude">Prelude</a></li>
+    <li><a href="#prerequisites">Prerequisites</a></li>
+    <li><a href="#main">Main</a>
+      <ul>
+        <li><a href="#the-template">The Template</a>
+          <ul>
+            <li><a href="#securitygroupremediationlambda">SecurityGroupRemediationLambda</a></li>
+            <li><a href="#scheduledrule">ScheduledRule</a></li>
+            <li><a href="#lambdainvokepermission">LambdaInvokePermission</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#installing-the-infrastructure">Installing the infrastructure</a>
+      <ul>
+        <li><a href="#download-the-starter-repo">Download the starter repo</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav></div>
+                </details>
+            </div><div class="post-content"><a class="post-dummy-target" id="prelude"></a><h2>Prelude</h2>
+<p>This is going to be the first in many auto-remediation blog posts! Each one will append more and more to our SAM template. I’m planning on making this a multi-part series where we develop a fully customized system to automatically remediating high risk findings.</p>
+<p>It sure is annoying having to revoke open security groups. You have to log into the console, navigate to EC2, find the violation, and remove the open ingress port and CIDR range. In an enterprise environment with multiple accounts, this can take significant time and resources. So let&rsquo;s create a system that will do this for us!</p>
+<p>We are going to use the following technologies today</p>
+<p>AWS Serverless Application Framework
+AWS Lambda
+Python
+AWS CloudWatch
+Events
+AWS IAM
+Roles
+Policies</p>
+<a class="post-dummy-target" id="prerequisites"></a><h2>Prerequisites</h2>
+<p>You should have an understanding of the above services, and some basic understanding of CloudFormation. This is imperative to deploying applications and services at scale.</p>
+<p>Ensure you install <a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html" target="_blank">AWS SAM</a>
+</p>
+<p>Ensure you have CloudTrail enabled. Took me some time when I cleaned my account out to figure out why this wasn’t working. Also make sure you configure a <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/send-cloudtrail-events-to-cloudwatch-logs.html" target="_blank">CloudWatch log group for the CloudTrail</a>
+</p>
+<a class="post-dummy-target" id="main"></a><h2>Main</h2>
+<a class="post-dummy-target" id="the-template"></a><h3>The Template</h3>
+<p>There is going to be a whole lot here, so lets break things down by their logical ID’s</p>
+<a class="post-dummy-target" id="securitygroupremediationlambda"></a><h4>SecurityGroupRemediationLambda</h4>
+<p>This is the lambda resource that we will be creating to do all the “work”. Its main job will to receive events, and leverage the boto3 library to remove open security groups and replace the IP ranges with the approved ones. It’s much better to update 0.0.0.0/0 to 10.0.0.0/8, than removing the CIDR range entirely. The CodeUri parameter refers to where the code is stored, and the handler parameter tells AWS Lambda where the to fund the function to execute. We also pass in some parameters and memory values as well. We also create a policy that will be attached to the lambda that allows it too invoke, and access to manage security groups.</p>
+<a class="post-dummy-target" id="scheduledrule"></a><h4>ScheduledRule</h4>
+<p>This resource creates a CloudWatch event that will listen to CloudWatch and look for any AWS API calls that match AuthorizeSecurityGroupIngress. If they match it will pass the event to the target, in this case the lambda mentioned above.</p>
+<a class="post-dummy-target" id="lambdainvokepermission"></a><h4>LambdaInvokePermission</h4>
+<p>This is a crucial, but often mistaken (especially by me in my early days) function required to invoke the lambda. This resource give the events service the permission to invoke the lambda. Without this, The event would never trigger the lambda.</p>
+<a class="post-dummy-target" id="installing-the-infrastructure"></a><h2>Installing the infrastructure</h2>
+<a class="post-dummy-target" id="download-the-starter-repo"></a><h3>Download the starter repo</h3>
+<ol>
+<li>Clone the repo</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">git clone https://github.com/getsec/aws-auto-remediate.git 
+</code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>
+<p>Create an S3 bucket in your account for storing the AWS SAM templates</p>
+</li>
+<li>
+<p>Edit the deploy script update the S3_BUCKET and REGION parameters to match accordingly. Ensure region is the same region in which your S3 bucket was created.</p>
+</li>
+<li>
+<p>Create an empty security group and copy the security group id.</p>
+</li>
+<li>
+<p>Use the bad_boy.sh script and pass in your security group id as the first parameter. This will add two bad security groups port 3389 and 22 open to the world.</p>
+</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">./bad_boy.sh sg-05fe30eb67c909f27
+
+</code></pre></td></tr></table>
+</div>
+</div><p>Lets make sure that it applied the bad rules correctly</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">aws ec2 describe-security-groups —group-ids <span class="o">[</span>your id<span class="o">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Expected output:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+    <span class="nt">&#34;SecurityGroups&#34;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&#34;Description&#34;</span><span class="p">:</span> <span class="s2">&#34;testing&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;GroupName&#34;</span><span class="p">:</span> <span class="s2">&#34;testing&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;IpPermissions&#34;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="nt">&#34;FromPort&#34;</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
+                    <span class="nt">&#34;IpProtocol&#34;</span><span class="p">:</span> <span class="s2">&#34;tcp&#34;</span><span class="p">,</span>
+                    <span class="nt">&#34;IpRanges&#34;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="p">{</span>
+                            <span class="nt">&#34;CidrIp&#34;</span><span class="p">:</span> <span class="s2">&#34;0.0.0.0/0&#34;</span>
+                        <span class="p">}</span>
+                    <span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;Ipv6Ranges&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;PrefixListIds&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;ToPort&#34;</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
+                    <span class="nt">&#34;UserIdGroupPairs&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span>
+                <span class="p">}</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="nt">&#34;FromPort&#34;</span><span class="p">:</span> <span class="mi">3389</span><span class="p">,</span>
+                    <span class="nt">&#34;IpProtocol&#34;</span><span class="p">:</span> <span class="s2">&#34;tcp&#34;</span><span class="p">,</span>
+                    <span class="nt">&#34;IpRanges&#34;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="p">{</span>
+                            <span class="nt">&#34;CidrIp&#34;</span><span class="p">:</span> <span class="s2">&#34;0.0.0.0/0&#34;</span>
+                        <span class="p">}</span>
+                    <span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;Ipv6Ranges&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;PrefixListIds&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;ToPort&#34;</span><span class="p">:</span> <span class="mi">3389</span><span class="p">,</span>
+                    <span class="nt">&#34;UserIdGroupPairs&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span>
+                <span class="p">}</span>
+            <span class="p">]</span><span class="p">,</span>
+            <span class="nt">&#34;OwnerId&#34;</span><span class="p">:</span> <span class="s2">&#34;736903191495&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;GroupId&#34;</span><span class="p">:</span> <span class="s2">&#34;sg-05fe30eb67c909f27&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;IpPermissionsEgress&#34;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="nt">&#34;IpProtocol&#34;</span><span class="p">:</span> <span class="s2">&#34;-1&#34;</span><span class="p">,</span>
+                    <span class="nt">&#34;IpRanges&#34;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="p">{</span>
+                            <span class="nt">&#34;CidrIp&#34;</span><span class="p">:</span> <span class="s2">&#34;0.0.0.0/0&#34;</span>
+                        <span class="p">}</span>
+                    <span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;Ipv6Ranges&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;PrefixListIds&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;UserIdGroupPairs&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span>
+                <span class="p">}</span>
+            <span class="p">]</span><span class="p">,</span>
+            <span class="nt">&#34;VpcId&#34;</span><span class="p">:</span> <span class="s2">&#34;vpc-104dd578&#34;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Good, now lets test out the lambda function locally</p>
+<ol start="6">
+<li>Lets use AWS SAM and test out our lambda against our sg. In the project directory, open the events.json file within the events directory. Update the groupId parameter to match your security group</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sam <span class="nb">local</span> invoke -e events/event.json 
+
+</code></pre></td></tr></table>
+</div>
+</div><p>And lets check that output</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+    <span class="nt">&#34;SecurityGroups&#34;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&#34;Description&#34;</span><span class="p">:</span> <span class="s2">&#34;testing&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;GroupName&#34;</span><span class="p">:</span> <span class="s2">&#34;testing&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;IpPermissions&#34;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="nt">&#34;FromPort&#34;</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
+                    <span class="nt">&#34;IpProtocol&#34;</span><span class="p">:</span> <span class="s2">&#34;tcp&#34;</span><span class="p">,</span>
+                    <span class="nt">&#34;IpRanges&#34;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="p">{</span>
+                            <span class="nt">&#34;CidrIp&#34;</span><span class="p">:</span> <span class="s2">&#34;10.0.0.0/8&#34;</span>
+                        <span class="p">}</span>
+                    <span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;Ipv6Ranges&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;PrefixListIds&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;ToPort&#34;</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
+                    <span class="nt">&#34;UserIdGroupPairs&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span>
+                <span class="p">}</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="nt">&#34;FromPort&#34;</span><span class="p">:</span> <span class="mi">3389</span><span class="p">,</span>
+                    <span class="nt">&#34;IpProtocol&#34;</span><span class="p">:</span> <span class="s2">&#34;tcp&#34;</span><span class="p">,</span>
+                    <span class="nt">&#34;IpRanges&#34;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="p">{</span>
+                            <span class="nt">&#34;CidrIp&#34;</span><span class="p">:</span> <span class="s2">&#34;10.0.0.0/8&#34;</span>
+                        <span class="p">}</span>
+                    <span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;Ipv6Ranges&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;PrefixListIds&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;ToPort&#34;</span><span class="p">:</span> <span class="mi">3389</span><span class="p">,</span>
+                    <span class="nt">&#34;UserIdGroupPairs&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span>
+                <span class="p">}</span>
+            <span class="p">]</span><span class="p">,</span>
+            <span class="nt">&#34;OwnerId&#34;</span><span class="p">:</span> <span class="s2">&#34;736903191495&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;GroupId&#34;</span><span class="p">:</span> <span class="s2">&#34;sg-05fe30eb67c909f27&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;IpPermissionsEgress&#34;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="nt">&#34;IpProtocol&#34;</span><span class="p">:</span> <span class="s2">&#34;-1&#34;</span><span class="p">,</span>
+                    <span class="nt">&#34;IpRanges&#34;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="p">{</span>
+                            <span class="nt">&#34;CidrIp&#34;</span><span class="p">:</span> <span class="s2">&#34;0.0.0.0/0&#34;</span>
+                        <span class="p">}</span>
+                    <span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;Ipv6Ranges&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;PrefixListIds&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+                    <span class="nt">&#34;UserIdGroupPairs&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span>
+                <span class="p">}</span>
+            <span class="p">]</span><span class="p">,</span>
+            <span class="nt">&#34;VpcId&#34;</span><span class="p">:</span> <span class="s2">&#34;vpc-104dd578&#34;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Awesome - it looked like it worked perfectly!</p>
+<ol start="8">
+<li>Now that we have validated everything is working. Lets deploy the CloudFormation template.</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">./deploy.sh
+</code></pre></td></tr></table>
+</div>
+</div><ol start="9">
+<li>That will deploy the template in your account. Now all we have to do for a final test, is use the bad_boy script again and wait for our deployed lambda to remediate it!</li>
+</ol>
+<a class="post-dummy-target" id="conclusion"></a><h2>Conclusion</h2>
+<p>I hope this helps you in your organization. I plan to make this a multi-part series where we develop and deploy a suite of automated controls to remediate high risk issues across all our environments!</p>
+<p>If you have an issues or questions, you can reach me via email (it’s in the socials on the blog). If you want to make any updates or changes to the pipeline - make sure you put in a PR on GitHub and we can work through it!</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2020-02-08</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><span><a href="//twitter.com/share?url=%2f2020%2f02%2faws-remedy-1%2f&amp;text=AWS%20Automated%20Remediation%20-%20Part%201%3a%20Security%20Groups&amp;via=%40get_sec" target="_blank" title="Share on Twitter">
+            <i class="fab fa-twitter fa-fw"></i>
+        </a><a href="//www.facebook.com/sharer/sharer.php?u=%2f2020%2f02%2faws-remedy-1%2f" target="_blank" title="Share on Facebook">
+            <i class="fab fa-facebook-square fa-fw"></i>
+        </a><a href="//reddit.com/submit?url=%2f2020%2f02%2faws-remedy-1%2f&amp;title=AWS%20Automated%20Remediation%20-%20Part%201%3a%20Security%20Groups" target="_blank" title="Share on Reddit">
+            <i class="fab fa-reddit fa-fw"></i>
+        </a></span></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section><span class="tag">
+                        <a href="/tags/aws/"><i class="fas fa-tag fa-fw"></i>&nbsp;aws</a>&nbsp;
+                    </span><span class="tag">
+                        <a href="/tags/security/"><i class="fas fa-tag fa-fw"></i>&nbsp;security</a>&nbsp;
+                    </span><span class="tag">
+                        <a href="/tags/automation/"><i class="fas fa-tag fa-fw"></i>&nbsp;automation</a>&nbsp;
+                    </span></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2020/01/csc/" class="prev" rel="prev" title="Cloud Security Commandments"><i class="fas fa-angle-left fa-fw"></i>Cloud Security Commandments</a></div>
+</div>
+<div class="post-comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Nathan Getty</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top" id="dynamic-to-top" data-scroll>
+            <span>&nbsp;</span>
+        </a><script src="/js/lib/jquery/jquery.slim.min.js"></script><script src="/js/lib/lazysizes/lazysizes.min.js"></script><script src="/js/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script>window.scroll = new SmoothScroll('[data-scroll]', {speed: 300, speedAsDuration: true});</script><link rel="stylesheet" href="/css/lib/katex/katex.min.css"><script src="/js/lib/katex/katex.min.js"></script><script defer src="/js/lib/katex/auto-render.min.js"></script><link rel="stylesheet" href="/css/lib/katex/copy-tex.min.css"><script defer src="/js/lib/katex/copy-tex.min.js"></script><script defer src="/js/lib/katex/mhchem.min.js"></script><script>
+        document.addEventListener("DOMContentLoaded", function () {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: "$$", right: "$$", display: true },
+                    { left: "\\(", right: "\\)", display: false },
+                    { left: "\\[", right: "\\]", display: true },{ left: "$", right: "$", display: false },]
+            });
+        });
+    </script><script src="/js/blog.min.js"></script>
+</body>
+</html>
