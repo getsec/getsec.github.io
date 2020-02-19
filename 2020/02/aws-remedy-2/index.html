@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>AWS Automated Remediation - Part 2: S3 Buckets | @me - Nathan Getty Blog</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp" />
+<meta name="Description" content="Automatically remediating poorly implemented s3 buckets"><link rel="prev" href="/2020/02/aws-remedy-1/" /><link rel="canonical" href="/2020/02/aws-remedy-2/" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff"><meta property="og:title" content="AWS Automated Remediation - Part 2: S3 Buckets" />
+<meta property="og:description" content="Automatically remediating poorly implemented s3 buckets" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/2020/02/aws-remedy-2/" />
+<meta property="article:published_time" content="2020-02-18T21:33:40+08:00" />
+<meta property="article:modified_time" content="2020-02-18T21:33:40+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AWS Automated Remediation - Part 2: S3 Buckets"/>
+<meta name="twitter:description" content="Automatically remediating poorly implemented s3 buckets"/>
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "AWS Automated Remediation - Part 2: S3 Buckets",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "\/2020\/02\/aws-remedy-2\/"
+        },"image": {
+                "@type": "ImageObject",
+                "url": "\/cover.png",
+                "width":  800 ,
+                "height":  600 
+            },"genre": "posts","keywords": "aws, security, automation, s3","wordcount":  624 ,
+        "url": "\/2020\/02\/aws-remedy-2\/","datePublished": "2020-02-18T21:33:40\x2b08:00","dateModified": "2020-02-18T21:33:40\x2b08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+                "@type": "Organization",
+                "name": "xxxx",
+                "logo": {
+                "@type": "ImageObject",
+                "url": "\/logo.png",
+                "width":  127 ,
+                "height":  40 
+                }
+            },"description": "Automatically remediating poorly implemented s3 buckets"
+    }
+    </script><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/css/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/css/lib/forkawesome/forkawesome.min.css"><link rel="stylesheet" href="/css/lib/animate/animate.min.css"></head>
+    <body><script>
+            if (!window.localStorage || !window.localStorage.getItem('theme')) {
+                window.isDark = 'dark' === 'dark';
+            } else {
+                window.isDark = (window.localStorage && window.localStorage.getItem('theme')) === 'dark';
+            }
+            window.isDark && document.body.classList.add('dark-theme');
+        </script><div class="wrapper"><nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-header animated bounceIn">
+            <a href="/">@me - Nathan Getty Blog</a>
+        </div>
+        <div class="navbar-menu"><a class="menu-item" href="/posts" title="">Posts</a><a class="menu-item" href="/tags" title="">Tags</a><a class="menu-item" href="/about" title="">About</a><a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw" title="Switch Theme"></i></a>
+        </div>
+    </div>
+</nav><nav class="navbar-mobile">
+    <div class="navbar-container">
+        <div class="navbar-header">
+            <div class="navbar-header-title animated bounceIn">
+                <a href="/">@me - Nathan Getty Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="navbar-menu" id="mobile-menu"><a class="menu-item" href="/posts" title="">Posts</a><a class="menu-item" href="/tags" title="">Tags</a><a class="menu-item" href="/about" title="">About</a><a href="javascript:void(0);" class="theme-switch"><i class="fas fa-adjust fa-rotate-180 fa-fw" title="Switch Theme"></i></a>
+        </div>
+    </div>
+</nav>
+<main class="main">
+                <div class="container"><article class="page"><h1 class="post-title animated flipInX">AWS Automated Remediation - Part 2: S3 Buckets</h1><div class="post-meta">
+            <div class="post-meta-main"><a class="author" href="https://github.com/getsec" rel="author" target="_blank">
+                    <i class="fas fa-user-circle fa-fw"></i>Nathan Getty
+                </a>&nbsp;</div>
+            <div class="post-meta-other"><i class="far fa-calendar-alt fa-fw"></i><time datetime=2020-02-18>2020-02-18</time>&nbsp;
+                <i class="fas fa-pencil-alt fa-fw"></i>about 624 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>3 min&nbsp;</div>
+        </div><div class="post-toc" id="post-toc">
+                <h2 class="post-toc-title">Contents</h2>
+                <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#prelude">Prelude</a></li>
+    <li><a href="#prerequisites">Prerequisites</a></li>
+    <li><a href="#main">Main</a>
+      <ul>
+        <li><a href="#the-template">The Template</a>
+          <ul>
+            <li><a href="#s3remediationlambda">S3RemediationLambda</a></li>
+            <li><a href="#s3schedule">S3Schedule</a></li>
+            <li><a href="#s3lambdainvokepermission">S3LambdaInvokePermission</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#installing-the-infrastructure">Installing the infrastructure</a>
+      <ul>
+        <li><a href="#update-the-repo">Update the repo</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#issues">Issues?!</a></li>
+  </ul>
+</nav></div>
+            </div>
+            <div class="post-toc-mobile" id="post-toc-mobile">
+                <details>
+                    <summary>
+                        <div class="post-toc-title">
+                            <span>Contents</span>
+                            <span><i class="details icon fas fa-angle-down"></i></span>
+                        </div>
+                    </summary>
+                    <div class="post-toc-content"><nav id="TableOfContentsMobile">
+  <ul>
+    <li><a href="#prelude">Prelude</a></li>
+    <li><a href="#prerequisites">Prerequisites</a></li>
+    <li><a href="#main">Main</a>
+      <ul>
+        <li><a href="#the-template">The Template</a>
+          <ul>
+            <li><a href="#s3remediationlambda">S3RemediationLambda</a></li>
+            <li><a href="#s3schedule">S3Schedule</a></li>
+            <li><a href="#s3lambdainvokepermission">S3LambdaInvokePermission</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#installing-the-infrastructure">Installing the infrastructure</a>
+      <ul>
+        <li><a href="#update-the-repo">Update the repo</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#issues">Issues?!</a></li>
+  </ul>
+</nav></div>
+                </details>
+            </div><div class="post-content"><a class="post-dummy-target" id="prelude"></a><h2>Prelude</h2>
+<p>Hey! Welcome back! This is the second iteration in our path to secure our AWS environments. Today we’re going to take a look at S3 buckets. You’ve all seen the news, S3 bucket made public, company X has leaked secrets about x,y, or z.  Just some examples:</p>
+<ol>
+<li><a href="https://www.computerweekly.com/news/252476870/Exposed-AWS-buckets-again-implicated-in-multiple-data-leaks" target="_blank">oh look</a>
+</li>
+<li><a href="https://techcrunch.com/2019/08/09/aws-ebs-cloud-backups-leak/" target="_blank">oh, another?</a>
+</li>
+<li><a href="https://www.trendmicro.com/vinfo/us/security/news/cybercrime-and-digital-threats/misconfigured-aws-s3-bucket-leaks-36-000-inmate-records" target="_blank">wait?!, Theres more!!?!?!</a>
+</li>
+</ol>
+<p>What if we could stop these when they happen! Not after the information gets leaked. Today we’re going to take look at how to automatically remove S3:GetObject permissions when they have the following bucket policies</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+  <span class="nt">&#34;Version&#34;</span><span class="p">:</span><span class="s2">&#34;2012-10-17&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;Statement&#34;</span><span class="p">:</span><span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&#34;Sid&#34;</span><span class="p">:</span><span class="s2">&#34;PublicRead&#34;</span><span class="p">,</span>
+      <span class="nt">&#34;Effect&#34;</span><span class="p">:</span><span class="s2">&#34;Allow&#34;</span><span class="p">,</span>
+      <span class="nt">&#34;Principal&#34;</span><span class="p">:</span> <span class="s2">&#34;*&#34;</span><span class="p">,</span>
+      <span class="nt">&#34;Action&#34;</span><span class="p">:</span><span class="p">[</span><span class="s2">&#34;s3:GetObject&#34;</span><span class="p">]</span><span class="p">,</span>
+      <span class="nt">&#34;Resource&#34;</span><span class="p">:</span><span class="p">[</span><span class="s2">&#34;arn:aws:s3:::examplebucket/*&#34;</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Or if the a user allows <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html" target="_blank">public list or write operations on the bucket?</a>
+</p>
+<p>Since we looked at all the prerequisites in the <a href="https://getsec.github.io/2020/02/aws-remedy-1/" target="_blank">first iteration</a>
+ we will just be looking at some of the newer items like the code and the resources that we append to the template!</p>
+<a class="post-dummy-target" id="prerequisites"></a><h2>Prerequisites</h2>
+<p>You should have an understanding of the above services, and some basic understanding of CloudFormation. This is imperative to deploying applications and services at scale.</p>
+<p>Ensure you install <a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html" target="_blank">AWS SAM</a>
+</p>
+<p>Ensure you have CloudTrail enabled. Took me some time when I cleaned my account out to figure out why this wasn’t working. Also make sure you configure a <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/send-cloudtrail-events-to-cloudwatch-logs.html" target="_blank">CloudWatch log group for the CloudTrail</a>
+</p>
+<a class="post-dummy-target" id="main"></a><h2>Main</h2>
+<a class="post-dummy-target" id="the-template"></a><h3>The Template</h3>
+<p>There is going to be a whole lot here, so lets break things down by their logical ID’s</p>
+<a class="post-dummy-target" id="s3remediationlambda"></a><h4>S3RemediationLambda</h4>
+<p>This lambda will revoke public permissions on any S3 bucket that’s passed in, besides what is passed in as a whitelist parameter. Keep in mind the whitelist parameter that is passed in NEEDS to be in a list format [“name1”,”name2”]. Please take a look at the code, its fully documented with docstrings and descriptors for you!</p>
+<a class="post-dummy-target" id="s3schedule"></a><h4>S3Schedule</h4>
+<p>This resource creates a CloudWatch event that will listen to CloudWatch and look for any AWS API calls that match</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">PutBucketAcl
+</code></pre></td></tr></table>
+</div>
+</div><p>or</p>
+<p><code>PutBucketPolicy</code></p>
+<p>If they match it will pass the event to the target, in this case the lambda mentioned above.</p>
+<a class="post-dummy-target" id="s3lambdainvokepermission"></a><h4>S3LambdaInvokePermission</h4>
+<p>This is a crucial, but often mistaken (especially by me in my early days) function required to invoke the lambda. This resource give the events service the permission to invoke the lambda. Without this, The event would never trigger the lambda.</p>
+<a class="post-dummy-target" id="installing-the-infrastructure"></a><h2>Installing the infrastructure</h2>
+<a class="post-dummy-target" id="update-the-repo"></a><h3>Update the repo</h3>
+<p>Update the repo</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> aws-auto-remediate
+git pull
+</code></pre></td></tr></table>
+</div>
+</div><p>Update the template file and remove the
+Create a bucket with a public policy (see above)
+Create a bucket with an ACL that allows public-read
+Edit both S3 events and make sure that your change the bucket to the one you created
+Use sam to build the template and test the lambda locally</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sam build <span class="o">&amp;&amp;</span> sam <span class="nb">local</span> invoke S3RemediationLambda -e events/s3_putbucketacl.json
+<span class="o">[</span>make sure the script runs and removes the ACL<span class="o">]</span>
+
+sam build <span class="o">&amp;&amp;</span> sam <span class="nb">local</span> invoke S3RemediationLambda -e events/s3_putbucketpolicy.json
+<span class="o">[</span>make sure the script runs and removes the ACL<span class="o">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Awesome - Once you determined it ran completely fine, you are good to deploy</p>
+<p>Now that we have validated everything is working. Lets deploy the CloudFormation template.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">./deploy.sh
+</code></pre></td></tr></table>
+</div>
+</div><p>That will deploy the template in your account. You can re-run step 3 and 4 to make sure everything runs as expected</p>
+<a class="post-dummy-target" id="conclusion"></a><h2>Conclusion</h2>
+<p>Thanks for tuning in to part II. I hope this post can help further your cloud security and help you from being one of those companies that leaks data right into the hands of evil!</p>
+<a class="post-dummy-target" id="issues"></a><h2>Issues?!</h2>
+<p>If you have issues, or for some reason the code doesn’t work for you, create an issue for me on the GitHub page and I will do everything I can to help! Thanks a bunch :)</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>The article was updated on 2020-02-18</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><span><a href="//twitter.com/share?url=%2f2020%2f02%2faws-remedy-2%2f&amp;text=AWS%20Automated%20Remediation%20-%20Part%202%3a%20S3%20Buckets&amp;via=%40get_sec" target="_blank" title="Share on Twitter">
+            <i class="fab fa-twitter fa-fw"></i>
+        </a><a href="//www.facebook.com/sharer/sharer.php?u=%2f2020%2f02%2faws-remedy-2%2f" target="_blank" title="Share on Facebook">
+            <i class="fab fa-facebook-square fa-fw"></i>
+        </a><a href="//reddit.com/submit?url=%2f2020%2f02%2faws-remedy-2%2f&amp;title=AWS%20Automated%20Remediation%20-%20Part%202%3a%20S3%20Buckets" target="_blank" title="Share on Reddit">
+            <i class="fab fa-reddit fa-fw"></i>
+        </a></span></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section><span class="tag">
+                        <a href="/tags/aws/"><i class="fas fa-tag fa-fw"></i>&nbsp;aws</a>&nbsp;
+                    </span><span class="tag">
+                        <a href="/tags/security/"><i class="fas fa-tag fa-fw"></i>&nbsp;security</a>&nbsp;
+                    </span><span class="tag">
+                        <a href="/tags/automation/"><i class="fas fa-tag fa-fw"></i>&nbsp;automation</a>&nbsp;
+                    </span><span class="tag">
+                        <a href="/tags/s3/"><i class="fas fa-tag fa-fw"></i>&nbsp;s3</a>&nbsp;
+                    </span></section>
+        <section>
+            <span><a href="javascript:window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2020/02/aws-remedy-1/" class="prev" rel="prev" title="AWS Automated Remediation - Part 1: Security Groups"><i class="fas fa-angle-left fa-fw"></i>AWS Automated Remediation - Part 1: Security Groups</a></div>
+</div>
+<div class="post-comment"></div>
+    </article></div>
+            </main><footer class="footer">
+    <div class="copyright"><div class="copyright-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a>
+        </div>
+
+        <div class="copyright-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Nathan Getty</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+    </div>
+</footer>
+</div><a href="#" class="dynamic-to-top" id="dynamic-to-top" data-scroll>
+            <span>&nbsp;</span>
+        </a><script src="/js/lib/jquery/jquery.slim.min.js"></script><script src="/js/lib/lazysizes/lazysizes.min.js"></script><script src="/js/lib/smooth-scroll/smooth-scroll.polyfills.min.js"></script><script>window.scroll = new SmoothScroll('[data-scroll]', {speed: 300, speedAsDuration: true});</script><link rel="stylesheet" href="/css/lib/katex/katex.min.css"><script src="/js/lib/katex/katex.min.js"></script><script defer src="/js/lib/katex/auto-render.min.js"></script><link rel="stylesheet" href="/css/lib/katex/copy-tex.min.css"><script defer src="/js/lib/katex/copy-tex.min.js"></script><script defer src="/js/lib/katex/mhchem.min.js"></script><script>
+        document.addEventListener("DOMContentLoaded", function () {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: "$$", right: "$$", display: true },
+                    { left: "\\(", right: "\\)", display: false },
+                    { left: "\\[", right: "\\]", display: true },{ left: "$", right: "$", display: false },]
+            });
+        });
+    </script><script src="/js/blog.min.js"></script>
+</body>
+</html>

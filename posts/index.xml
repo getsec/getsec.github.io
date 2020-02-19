@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 08 Feb 2020 21:57:40 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 18 Feb 2020 21:33:40 +0800</lastBuildDate>
     
 	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>AWS Automated Remediation - Part 2: S3 Buckets</title>
+      <link>/2020/02/aws-remedy-2/</link>
+      <pubDate>Tue, 18 Feb 2020 21:33:40 +0800</pubDate>
+      
+      <guid>/2020/02/aws-remedy-2/</guid>
+      <description>Prelude Hey! Welcome back! This is the second iteration in our path to secure our AWS environments. Today we’re going to take a look at S3 buckets. You’ve all seen the news, S3 bucket made public, company X has leaked secrets about x,y, or z. Just some examples:
+ oh look  oh, another?  wait?!, Theres more!!?!?!   What if we could stop these when they happen! Not after the information gets leaked.</description>
+    </item>
     
     <item>
       <title>AWS Automated Remediation - Part 1: Security Groups</title>

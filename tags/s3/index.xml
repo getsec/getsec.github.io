@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>automation on @me - Nathan Getty Blog</title>
-    <link>/tags/automation/</link>
-    <description>Recent content in automation on @me - Nathan Getty Blog</description>
+    <title>s3 on @me - Nathan Getty Blog</title>
+    <link>/tags/s3/</link>
+    <description>Recent content in s3 on @me - Nathan Getty Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Tue, 18 Feb 2020 21:33:40 +0800</lastBuildDate>
     
-	<atom:link href="/tags/automation/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/s3/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -20,16 +20,6 @@
       <guid>/2020/02/aws-remedy-2/</guid>
       <description>Prelude Hey! Welcome back! This is the second iteration in our path to secure our AWS environments. Today we’re going to take a look at S3 buckets. You’ve all seen the news, S3 bucket made public, company X has leaked secrets about x,y, or z. Just some examples:
  oh look  oh, another?  wait?!, Theres more!!?!?!   What if we could stop these when they happen! Not after the information gets leaked.</description>
-    </item>
-    
-    <item>
-      <title>AWS Automated Remediation - Part 1: Security Groups</title>
-      <link>/2020/02/aws-remedy-1/</link>
-      <pubDate>Sat, 08 Feb 2020 21:57:40 +0800</pubDate>
-      
-      <guid>/2020/02/aws-remedy-1/</guid>
-      <description>Prelude This is going to be the first in many auto-remediation blog posts! Each one will append more and more to our SAM template. I’m planning on making this a multi-part series where we develop a fully customized system to automatically remediating high risk findings.
-It sure is annoying having to revoke open security groups. You have to log into the console, navigate to EC2, find the violation, and remove the open ingress port and CIDR range.</description>
     </item>
     
   </channel>
