@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Nathan Getty",
-  title: "Senior Security Engineer",
+  title: "Lead Security Engineer",
   description:
     "Nathan Getty — security platform engineer specializing in security automation across multi-cloud environments.",
   // Change this hex to recolor the whole site (hero, accents, hover states).
@@ -57,6 +57,71 @@ export const siteConfig = {
         "Published guidance and delivered a webcast on application security practices for AWS environments.",
       link: "",
       skills: ["Publication", "2019", "AWS"],
+    },
+  ],
+  // "Selected Work" section — abstracted to core capabilities (no internal names).
+  selectedWork: [
+    {
+      name: "AI-Native Tooling & Developer Integrations",
+      description:
+        "Building the infrastructure that lets AI coding tools (Claude Code, Gemini CLI, and similar) safely interact with on-prem enterprise systems.",
+      bullets: [
+        "Developed and deployed a Model Context Protocol (MCP) server exposing a secure, streamable HTTP (SSE) interface to enterprise issue-tracking and wiki systems.",
+        "Added capabilities like watcher management and page creation/updates, with support for wiki markup, storage XML, and gzipped base64 streams for large payloads.",
+        "Integrated markup primers into tool descriptions to guide LLMs through non-standard formatting.",
+        "Built an AI plugin that automates SAST gap investigations and proposes and writes repo-specific Python matchers.",
+      ],
+      skills: ["MCP", "LLM Tooling", "Python", "SSE / HTTP", "SAST"],
+    },
+    {
+      name: "Cloud Data Privacy & Telemetry Infrastructure",
+      description:
+        "Designed a secure telemetry pipeline for Claude Code/Cowork usage that balances data-driven insight with strict privacy and compliance.",
+      bullets: [
+        "Built a custom OpenTelemetry collector packaged as a Kubernetes/Helm chart and deployed to managed Kubernetes (GKE).",
+        "Configured in-flight redaction processors that detect sensitive prompt logs and strip them before they leave the network.",
+        "Fanned out telemetry from a single pipeline to multiple destinations — log monitoring, engineering metrics, and an analytics warehouse.",
+        "Designed split-stream routing that stores raw, unredacted logs in a tightly restricted, security-owned bucket for forensics while keeping all downstream endpoints sanitized.",
+      ],
+      skills: ["OpenTelemetry", "Kubernetes / Helm", "GKE", "Data Privacy"],
+    },
+    {
+      name: "Continuous Vulnerability Management & SBOM Architecture",
+      description:
+        "Architected a continuous-compliance and immutable release-tracking framework for production VM images.",
+      bullets: [
+        "Specified and built a distributed worker service (Cloud Run + Pub/Sub) that uses Syft to extract disk images offline and publish CycloneDX SBOMs to cloud storage.",
+        "Deployed OWASP Dependency-Track instance that continuously matches newly disclosed CVEs against existing SBOM catalogs without re-scanning live VMs.",
+        "Authored reusable CI/CD components that run Trivy and generate SBOMs as an enforced gate before container releases.",
+      ],
+      skills: ["SBOM", "Syft", "CycloneDX", "Dependency-Track", "Trivy"],
+    },
+    {
+      name: "Compliance, Host Security & Exceptions-as-Code",
+      description:
+        "Manages compliance posture and endpoint-agent health across AWS and GCP host fleets.",
+      bullets: [
+        "Built an exceptions-as-code platform: compliance exception profiles version-controlled in YAML, peer-reviewed via merge requests, and applied automatically through pipelines.",
+        "Wrote a Python wrapper and systemd daemon deployed fleet-wide that configures and runs host-monitoring agents on boot by querying cloud instance metadata (IMDS).",
+      ],
+      skills: ["Host Security", "FedRAMP", "Python", "systemd", "IaC"],
+    },
+    {
+      name: "Infrastructure Security & Supply-Chain Automation",
+      description:
+        "Maintains foundational security boundaries and automated update systems across development repositories.",
+      bullets: [
+        "Implemented secure just in time access flows bastion-to-database/instance administration routes.",
+        "Set up sweeping automated dependency and OS-package updates (Ubuntu, Go, Python, Node) across repos to keep a clean security footprint (Renovate).",
+        "Authored custom incident-response tooling (containment, volume snapshots, memory snapshots).",
+      ],
+      skills: [
+        "Terraform",
+        "Spacelift",
+        "Renovate",
+        "Go",
+        "Supply-Chain Security",
+      ],
     },
   ],
   experience: [
