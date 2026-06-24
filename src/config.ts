@@ -34,7 +34,7 @@ export const siteConfig = {
       name: "MCP: Making Compromise Possible — AI Workflows and Security Implications",
       description:
         "The Long Con (f/k/a B-Sides), 2025. Demonstrated prompt-injection attacks through live exploitation of AI workflows integrated with enterprise tools — showing how malicious content can compromise credentials and systems — with actionable recommendations for organizations deploying AI-assisted workflows.",
-      link: "",
+      link: "https://thelongcon.ca/2025/speakers/#nathangetty",
       skills: ["The Long Con", "2025", "AI Security"],
     },
     {
@@ -55,7 +55,7 @@ export const siteConfig = {
       name: "AWS Application Security — Publication & Webcast",
       description:
         "Published guidance and delivered a webcast on application security practices for AWS environments.",
-      link: "",
+      link: "https://pages.awscloud.com/rs/112-TZM-766/images/JumpStart%20Guide%20Application%20Security%20in%20AWS.pdf",
       skills: ["Publication", "2019", "AWS"],
     },
   ],
