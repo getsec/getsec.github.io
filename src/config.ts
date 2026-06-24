@@ -11,7 +11,7 @@ export const siteConfig = {
     github: "https://github.com/getsec",
   },
   aboutMe:
-    "Security platform engineer with 10+ years in infrastructure security, specializing in automating security services. I design automated security systems for multi-cloud environments and turn third-party security tools into scalable, developer-friendly platforms. Strong software engineering foundation in Python, Infrastructure as Code, and cloud-native architecture (GCP, AWS) — with a track record of reducing operational toil through automation while enabling engineering teams to move fast without compromising security.",
+    "Security platform engineer with 10+ years in infrastructure security, specializing in automating security services. I design automated security systems for multi-cloud environments and turn third-party security tools into scalable, developer-friendly platforms. Strong software engineering foundation in Python, Infrastructure as Code, and cloud-native architecture (GCP, AWS) — with a track record of reducing operational toil through automation while enabling engineering teams to move fast without compromising security. Now working at the intersection of security and AI. I build the infrastructure that lets AI tools operate safely inside the enterprise — secure agent integrations (MCP), AI-driven detection and triage, and privacy-preserving telemetry pipelines — and I research how AI workflows get attacked, from prompt injection to data exfiltration.",
   skills: [
     "Python",
     "Terraform",
