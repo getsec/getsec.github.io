@@ -1,0 +1,40 @@
+---
+import { getCollection, render } from "astro:content";
+import BlogLayout from "../../layouts/BlogLayout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BlogLayout title={post.data.title} description={post.data.description}>
+  <a href="/blog" class="text-sm text-gray-500 hover:text-black transition-colors"
+    >&larr; Back to blog</a
+  >
+  <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-4">
+    {post.data.title}
+  </h1>
+  <time
+    class="block text-sm text-gray-500 mt-2"
+    datetime={post.data.date.toISOString()}
+  >
+    {
+      post.data.date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    }
+  </time>
+
+  <article class="markdown mt-8">
+    <Content />
+  </article>
+</BlogLayout>

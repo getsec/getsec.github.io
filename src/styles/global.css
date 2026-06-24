@@ -3,3 +3,81 @@
 body {
   font-family: 'IBM Plex Mono', monospace;
 }
+
+/* Rendered Markdown (blog posts) — Tailwind's preflight resets these, so
+   restore readable defaults for content coming from .md files. */
+.markdown {
+  line-height: 1.7;
+  color: #374151;
+}
+.markdown > :first-child {
+  margin-top: 0;
+}
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  color: #111827;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 1.75rem 0 0.75rem;
+}
+.markdown h2 {
+  font-size: 1.6rem;
+}
+.markdown h3 {
+  font-size: 1.3rem;
+}
+.markdown p {
+  margin: 0 0 1rem;
+}
+.markdown a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+.markdown ul,
+.markdown ol {
+  margin: 0 0 1rem 1.5rem;
+}
+.markdown ul {
+  list-style: disc;
+}
+.markdown ol {
+  list-style: decimal;
+}
+.markdown li {
+  margin: 0.3rem 0;
+}
+.markdown blockquote {
+  border-left: 3px solid #d1d5db;
+  padding-left: 1rem;
+  color: #6b7280;
+  font-style: italic;
+  margin: 0 0 1rem;
+}
+.markdown code {
+  background: #f3f4f6;
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+.markdown pre {
+  background: #f3f4f6;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 0 0 1rem;
+}
+.markdown pre code {
+  background: none;
+  padding: 0;
+}
+.markdown img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+.markdown hr {
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+  margin: 2rem 0;
+}
