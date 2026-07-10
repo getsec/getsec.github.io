@@ -21,6 +21,11 @@ it from scratch is a genuinely good way to learn how the pieces actually fit
 together. Take this as one person's fun way to learn, not a recommendation to
 replace whatever already works for you.
 
+<figure>
+  <img src="/blog/agent-manager/dashboard.png" alt="Agent Manager dashboard: three running session cards and a projects panel, one project tagged multi · compose-portblock" />
+  <figcaption>The dashboard — one card per <code>claude-rc@</code> systemd unit, and a projects panel where multi-session repos carry a protocol badge.</figcaption>
+</figure>
+
 ## The substrate: one service per repo, one private tmux server each
 
 Before the multi-agent part makes sense, the single-session model:
@@ -54,6 +59,11 @@ systemctl --user stop claude-rc@<a>
 # session <b> must stay online in the phone app
 ```
 
+<figure>
+  <img src="/blog/agent-manager/log-drawer.png" alt="Live journal drawer for a session streaming systemd and tmux log lines" />
+  <figcaption>The <code>logs</code> drawer is just a live <code>journalctl -f</code> on that session's unit — systemd and its private tmux server, streamed straight to the browser.</figcaption>
+</figure>
+
 ## The real problem: two agents, one repo, one set of ports
 
 Running two sessions on two *different* repos is easy — they share nothing.
@@ -71,6 +81,11 @@ Two things immediately collide:
 2. **Runtime resources.** If both agents run the app — a dev server, a Postgres,
    a compose stack — they fight over the same ports and the same container/project
    names. *This* is the hard part, and it's where most of the design went.
+
+<figure>
+  <img src="/blog/agent-manager/add-repo-multisession.png" alt="Header with the multi-session box checked and a Compose port-block protocol picked from a dropdown; two sessions of the same repo running below" />
+  <figcaption>Enabling multi-session at add-repo time: check the box, pick a coordination protocol, and the manager scaffolds the shared ledger for you. Here <code>triage-cspm</code> and <code>triage-cspm-jj</code> are two sessions on the same repo.</figcaption>
+</figure>
 
 ## The decision that shaped everything: the manager allocates nothing
 
@@ -99,6 +114,11 @@ sees the same state.
 > them. No orchestration logic to keep in sync with reality — the reality is a
 > file the agents can read.
 
+<figure>
+  <img src="/blog/agent-manager/protocols-editor.png" alt="Coordination protocols modal: a list of protocols on the left, and on the right an editor for slug, name, description, template vars, and the MULTI_AGENT.md body with ${VAR} placeholders" />
+  <figcaption>The protocol library. A protocol is just a named Markdown template with <code>${VAR}</code> defaults — the manager renders it, it never interprets it.</figcaption>
+</figure>
+
 ## The built-in protocol: port blocks by session number
 
 The tool seeds one protocol on first run, `compose-portblock`, which is the
@@ -118,6 +138,11 @@ each agent's containers, networks, and volumes in a separate namespace, so
 protocol also tells the agent to write its claim (worktree, branch,
 `COMPOSE_PROJECT_NAME`, ports, `active`/`done`) into `SESSIONS.md` and commit it,
 so the next agent reads the ledger and takes the next free block.
+
+<figure>
+  <img src="/blog/agent-manager/multiagent-editor.png" alt="A project's rendered MULTI_AGENT.md showing concrete instructions: Postgres 5432 + 10*N, API 8000 + 10*N, Web 5173 + 10*N, and a re-sync from protocol button" />
+  <figcaption>The rendered <code>MULTI_AGENT.md</code> a project's agents actually read — <code>${VAR}</code>s filled in to concrete port math. <em>re-sync from protocol</em> re-renders it from the library version.</figcaption>
+</figure>
 
 Because it's just Markdown with variables, it's not special. Duplicate it, change
 the base ports, swap Postgres for MySQL, encode a totally different convention
