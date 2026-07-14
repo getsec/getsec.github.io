@@ -4,6 +4,9 @@ description: "A local control panel that runs Claude Code sessions as systemd --
 date: 2026-07-10
 ---
 
+I was bored, so I made this. I don't know if it's useful to you. It's useful to
+me. Here ya go.
+
 I wanted to run Claude Code remote-control (RC) sessions, one per repo, always
 on, reachable from my phone, without handing any of it to a cloud service. So I
 built [**Agent Manager**](https://github.com/getsec/claude-rc-manager): a local,
@@ -18,9 +21,7 @@ auth.
 
 One caveat up front: there are probably many ways to do this, and I don't think
 this is the *best* way. But I always find it fun to build your own, and rolling
-it from scratch is a good way to learn how the pieces actually fit together. Take
-this as one person's fun way to learn, not a recommendation to replace whatever
-already works for you.
+it from scratch is a good way to learn how the pieces actually fit together.
 
 <figure>
   <img src="/blog/agent-manager/dashboard.png" alt="Agent Manager dashboard: three running session cards and a projects panel, one project tagged multi · compose-portblock" />
