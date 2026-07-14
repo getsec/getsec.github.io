@@ -1,27 +1,31 @@
 ---
-title: "Agent Manager: coordinating many Claude Code sessions on one repo"
-description: "A local control panel that runs Claude Code sessions as systemd --user services, gives each one a real browser terminal over tmux control mode, and lets several of them work the same repo in parallel, coordinated by written protocols the agents follow rather than port math baked into the tool."
+title: "Agent Manager - The dumbest possible multi-agent coordinator"
+description: "I was bored, so I built Agent Manager: a local control panel for Claude Code sessions, each one a systemd --user service, with a real browser terminal over tmux control mode and several agents working the same repo without fighting over ports. Useful to me, possibly to nobody else."
 date: 2026-07-10
 ---
 
-I was bored, so I made this. I don't know if it's useful to you. It's useful to
-me. Here ya go.
+I was bored, so I made this. Did I use AI? Yup. Did I get AI to help me write
+this article? Also yup. Do I give a shit? Not really.
+
+That's sort of the whole point. AI lets us do the stupid shit faster. This might
+not be useful to a single other person, but I think it's a hell of a lot of fun,
+so take that how you will. Here ya go:
+[**github.com/getsec/claude-rc-manager**](https://github.com/getsec/claude-rc-manager).
 
 I wanted to run Claude Code remote-control (RC) sessions, one per repo, always
 on, reachable from my phone, without handing any of it to a cloud service. So I
-built [**Agent Manager**](https://github.com/getsec/claude-rc-manager): a local,
-single-user web control panel that runs each session as a `systemd --user`
-service, gives you a dashboard over `systemctl --user`, and drops a real terminal
-into any session from the browser. It also lets *several* sessions work the same
-repo in parallel without stepping on each other, which is what most of this post
-is about.
+built Agent Manager: a local, single-user web control panel that runs each
+session as a `systemd --user` service, gives you a dashboard over
+`systemctl --user`, and drops a real terminal into any session from the browser.
+It also lets *several* sessions work the same repo in parallel without stepping
+on each other, which is what most of this post is about.
 
 It runs entirely on your own machine, as your own user. No root, no cloud, no
 auth.
 
 One caveat up front: there are probably many ways to do this, and I don't think
-this is the *best* way. But I always find it fun to build your own, and rolling
-it from scratch is a good way to learn how the pieces actually fit together.
+this is the *best* way. Rolling it from scratch is just a good way to learn how
+the pieces actually fit together.
 
 <figure>
   <img src="/blog/agent-manager/dashboard.png" alt="Agent Manager dashboard: three running session cards and a projects panel, one project tagged multi · compose-portblock" />
@@ -157,31 +161,6 @@ I'd written in my own design doc that a terminal "is not an escalation" of what
 the dashboard could already do, since it can already provision repos and start
 agents that run arbitrary commands. That was wrong in one specific way, and the
 injection bug is what made me look hard enough to notice.
-
-### The phone, again
-
-The terminal is fullscreen, which came down to two CSS decisions that determine
-whether it's usable on a phone at all.
-
-The height has to be `100dvh`, not `100vh`. On mobile Safari and Chrome, `100vh`
-means "the viewport with the address bar hidden", so a `100vh` terminal runs
-taller than the screen and the rows it shoves off the bottom are exactly the ones
-you need: Claude's input box. `dvh` tracks the viewport you can actually see.
-
-And Escape can't close it. Every overlay wants to close on Escape; this one
-can't, because Escape is the most valuable key the terminal forwards. It's how
-you interrupt an agent mid-response. An Escape-to-close overlay would eat the
-keystroke you most need. So it closes with a button and nothing clever: no swipe,
-which fights the terminal's own touch scrolling, and no chord, because any chord
-I claim is a chord Claude can never receive.
-
-The on-screen keyboard should need no special handling: it shrinks the visual
-viewport, the container resizes, and the same `ResizeObserver` that handles a
-window resize refits and tells tmux the new size. *Should*, because that's the
-one part I haven't confirmed on a real device yet. xterm focuses a hidden
-textarea to raise the keyboard, and iOS is notoriously picky about programmatic
-focus. If it doesn't fire, the fix is a tap handler that focuses from the real
-gesture. I'd rather say that than claim a phone test I haven't run.
 
 ## Remote control became a choice
 
@@ -413,53 +392,6 @@ tmux, node, and the claude CLI together, instead of failing on each in turn and
 making you run it four times. It also catches the node your distro packaged,
 which is routinely too old and otherwise surfaces as a confusing syntax error
 somewhere deep in the app.
-
-### The one prerequisite the preflight misses
-
-Install cleanly, open the UI, paste an SSH repo URL, and you can still land on
-this:
-
-```
-fatal: Could not read from remote repository.
-Please make sure you have the correct access rights and the repository exists.
-```
-
-Which is a lie, more or less. Your access rights are fine and the repo exists.
-What's actually missing is a line in `~/.ssh/known_hosts`.
-
-The first time any machine talks to GitHub over SSH, ssh asks you to vouch for
-the host key:
-
-```
-The authenticity of host 'github.com (140.82.114.3)' can't be established.
-ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.
-This key is not known by any other names.
-Are you sure you want to continue connecting (yes/no/[fingerprint])?
-```
-
-You type `yes` once, the key gets recorded, and you never think about it again,
-which is exactly why it's easy to forget you ever did it. The manager clones as a
-child process of a `systemd --user` service: no TTY, nobody to answer. ssh won't
-prompt into the void, so it gives up with `Host key verification failed`, and
-git's own downstream complaint is the one that reaches the UI. Same shape as the
-`--print` problem at the top of this post: a tool that behaves differently when
-it can't find a terminal, and an error message that points somewhere else
-entirely.
-
-So before you add a repo over SSH, make sure the host key is already trusted.
-Clone anything from GitHub by hand once, or seed it directly:
-
-```bash
-ssh-keyscan github.com >> ~/.ssh/known_hosts
-```
-
-`ssh-keyscan` trusts whatever answers, so check the fingerprint it gives you
-against GitHub's published one (the ED25519 key above) rather than taking the
-network's word for it. HTTPS URLs sidestep the whole thing.
-
-This one belongs in the preflight: `ssh-keygen -F github.com` answers it in a
-line, and the whole point of gathering requirements up front is to not find out
-later. It isn't there yet, which is why it's in the post instead.
 
 Code: [github.com/getsec/claude-rc-manager](https://github.com/getsec/claude-rc-manager).
 
